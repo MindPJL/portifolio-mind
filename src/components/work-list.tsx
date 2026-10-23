@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { ProjectSummary } from "@/lib/projects";
 
-const filters = ["All", "Interface", "Systems", "Tool"] as const;
+const filters = ["All", "Interface", "Tool"] as const;
 type Filter = (typeof filters)[number];
 
 export function WorkList({
@@ -22,13 +22,13 @@ export function WorkList({
       : projects.filter((project) => project.kind === filter);
 
   const countLabel =
-    visible.length === 1 ? "1 study" : `${visible.length} studies`;
+    visible.length === 1 ? "1 project" : `${visible.length} projects`;
 
   return (
     <div>
       {showFilter ? (
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div role="group" aria-label="Filter studies" className="flex flex-wrap gap-2">
+          <div role="group" aria-label="Filter projects" className="flex flex-wrap gap-2">
             {filters.map((item) => {
               const selected = filter === item;
               return (
