@@ -1,0 +1,131 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Container } from "@/components/container";
+import { ProjectFigure } from "@/components/project-figure";
+import { getNextProject, getProject, projects } from "@/lib/projects";
+
+export function generateStaticParams() {
+  return projects.map((project) => ({ slug: project.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/work/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProject(slug);
+
+  if (!project) {
+    return { title: "Work" };
+  }
+
+  return {
+    title: project.title,
+    description: project.summary,
+  };
+}
+
+export default async function ProjectPage({
+  params,
+}: PageProps<"/work/[slug]">) {
+  const { slug } = await params;
+  const project = getProject(slug);
+
+  if (!project) {
+    notFound();
+  }
+
+  const next = getNextProject(project.slug);
+
+  return (
+    <Container className="py-14 sm:py-20">
+      <Link
+        href="/work"
+        className="font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase underline-offset-4 hover:text-foreground hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
+      >
+        ← All work
+      </Link>
+
+      <p className="mt-10 font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase">
+        <span className="text-signal">Study</span>
+        <span className="px-2 text-border" aria-hidden="true">
+          /
+        </span>
+        {project.kind}
+      </p>
+      <h1 className="mt-4 font-serif text-5xl tracking-tight text-balance sm:text-7xl">
+        {project.title}
+      </h1>
+      <p className="mt-6 max-w-2xl text-xl leading-relaxed text-pretty text-muted-foreground">
+        {project.summary}
+      </p>
+
+      <div className="mt-10">
+        <ProjectFigure slug={project.slug} />
+      </div>
+
+      <ul className="mt-6 flex flex-wrap gap-2" aria-label="Stack">
+        {project.stack.map((item) => (
+          <li
+            key={item}
+            className="border border-border px-2.5 py-1 font-mono text-[0.7rem] tracking-[0.14em] uppercase"
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-14 grid max-w-2xl gap-12">
+        <section>
+          <h2 className="font-serif text-3xl tracking-tight">The problem</h2>
+          <p className="mt-4 text-lg leading-relaxed text-pretty">{project.problem}</p>
+        </section>
+        <section>
+          <h2 className="font-serif text-3xl tracking-tight">What I kept</h2>
+          <ul className="mt-4 flex flex-col gap-4">
+            {project.kept.map((item) => (
+              <li key={item} className="border-l border-signal pl-4 text-base leading-relaxed">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section>
+          <h2 className="font-serif text-3xl tracking-tight">What I left out</h2>
+          <ul className="mt-4 flex flex-col gap-4">
+            {project.leftOut.map((item) => (
+              <li
+                key={item}
+                className="border-l border-foreground/25 pl-4 text-base leading-relaxed text-muted-foreground"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      {next ? (
+        <Link
+          href={`/work/${next.slug}`}
+          className="group mt-16 flex items-end justify-between gap-6 border-t border-border pt-8 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
+        >
+          <span>
+            <span className="font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase">
+              Next study
+            </span>
+            <span className="mt-2 block font-serif text-4xl tracking-tight sm:text-5xl">
+              {next.title}
+            </span>
+          </span>
+          <span
+            aria-hidden="true"
+            className="pb-1 text-2xl text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+          >
+            →
+          </span>
+        </Link>
+      ) : null}
+    </Container>
+  );
+}
