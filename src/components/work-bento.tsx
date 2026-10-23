@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { Magnetic } from "@/components/magnetic";
 import { useLanguage } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import { ProjectFigure } from "@/components/project-figure";
 import { projects } from "@/lib/projects";
 
-const filterKeys = ["all", "interface", "systems", "tool"] as const;
+const filterKeys = ["all", "interface", "tool"] as const;
 type FilterKey = (typeof filterKeys)[number];
 
 export function WorkBento() {
@@ -24,6 +25,7 @@ export function WorkBento() {
         kind: copy?.kind ?? project.kind,
         summary: copy?.summary ?? project.summary,
         stack: project.stack,
+        repo: project.repo,
         kindKey: project.kind.toLowerCase() as "interface" | "systems" | "tool",
       };
     });
@@ -35,7 +37,6 @@ export function WorkBento() {
   const labels = {
     all: dictionary.work.filters.all,
     interface: dictionary.work.filters.interface,
-    systems: dictionary.work.filters.systems,
     tool: dictionary.work.filters.tool,
   };
 
@@ -68,10 +69,10 @@ export function WorkBento() {
           })}
         </div>
         <Link
-          href="/#pricing"
+          href="/languages"
           className="text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          {dictionary.work.viewPricing} <span aria-hidden="true">↗</span>
+          {dictionary.work.viewLanguages} <span aria-hidden="true">↗</span>
         </Link>
       </div>
 
@@ -82,36 +83,37 @@ export function WorkBento() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {visible.map((project, index) => (
-            <Link
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className="bento-card group overflow-hidden rounded-2xl border border-border bg-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet"
-              style={{ transitionDelay: `${index * 40}ms` }}
-            >
-              <ProjectFigure
-                slug={project.slug}
-                className="rounded-none border-0 border-b border-border"
-              />
-              <div className="flex items-start justify-between gap-4 p-5">
-                <div>
-                  <p className="text-xs tracking-[0.14em] text-muted-foreground uppercase">
-                    {project.index} / {project.kind}
-                  </p>
-                  <h3 className="mt-2 font-display text-3xl tracking-tight uppercase">
-                    {project.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {project.summary}
-                  </p>
+            <Magnetic key={project.slug} strength={10}>
+              <Link
+                href={`/work/${project.slug}`}
+                className="bento-card group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet"
+                style={{ transitionDelay: `${index * 40}ms` }}
+              >
+                <ProjectFigure
+                  slug={project.slug}
+                  className="rounded-none border-0 border-b border-border"
+                />
+                <div className="flex flex-1 items-start justify-between gap-4 p-5">
+                  <div>
+                    <p className="text-xs tracking-[0.14em] text-muted-foreground uppercase">
+                      {project.index} / {project.kind}
+                    </p>
+                    <h3 className="mt-2 font-display text-3xl tracking-tight uppercase">
+                      {project.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {project.summary}
+                    </p>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    className="mt-1 text-lg transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  >
+                    ↗
+                  </span>
                 </div>
-                <span
-                  aria-hidden="true"
-                  className="mt-1 text-lg transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-                >
-                  ↗
-                </span>
-              </div>
-            </Link>
+              </Link>
+            </Magnetic>
           ))}
         </div>
       )}

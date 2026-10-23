@@ -6,6 +6,7 @@ export type Project = {
   title: string;
   kind: ProjectKind;
   stack: string[];
+  repo?: string;
   summary: string;
   problem: string;
   kept: string[];
@@ -18,85 +19,87 @@ export type ProjectSummary = Pick<
 >;
 
 /**
- * Studies stand in for shipped work. Replace an entry here when a real
- * project is ready — keep the same shape and the pages will follow.
+ * Public work from github.com/MindPJL. Private projects stay off the shelf.
  */
 export const projects: Project[] = [
   {
-    slug: "ledger",
+    slug: "docinho",
     index: "01",
-    title: "Ledger",
-    kind: "Tool",
-    stack: ["TypeScript", "SQLite"],
-    summary:
-      "A personal ledger that keeps every amount as whole cents and every change as a line you can read back.",
-    problem:
-      "Spreadsheets hide the moment a number stopped being true. A cell gets overwritten, a formula drifts, and the total still looks confident.",
-    kept: [
-      "Amounts are integers in minor units. No floating point on the path that adds money.",
-      "Entries are append-only. A correction is a new line, not an edit that erases the old one.",
-      "The balance is a fold over the log. It is never a stored column that can drift away from the entries.",
-    ],
-    leftOut: [
-      "Bank connections, budgets, and charts. Those can wait until the record itself is trustworthy.",
-      "Multiple currencies in the first version. One unit, named out loud, is enough to prove the model.",
-    ],
-  },
-  {
-    slug: "quiet",
-    index: "02",
-    title: "Quiet",
+    title: "Docinho",
     kind: "Interface",
-    stack: ["React", "CSS"],
+    stack: ["TypeScript", "React"],
+    repo: "https://github.com/MindPJL/Portifolio-Docinho",
     summary:
-      "A reading surface with one column, a type size you set once, and progress that does not announce itself.",
+      "A portfolio surface for a real brand — layout, type, and motion that introduce someone before they say a word.",
     problem:
-      "Reading on a screen is usually a negotiation with chrome. The text shares the room with badges, recommendations, and a bar that wants credit for your attention.",
+      "A portfolio that looks like a template disappears. The person behind it needs a first screen that feels specific.",
     kept: [
-      "A measure of about sixty-six characters, a short type ramp, and margins that stay wide when the window gets large.",
-      "Position stored with the document, not in an account. Close the tab, come back, and the sentence is where you left it.",
-      "Controls that appear when you ask and leave when you are reading.",
+      "A clear hero and a path through the work without drowning the visitor in chrome.",
+      "TypeScript end to end, so the structure stays honest as the pages grow.",
+      "Motion that points at hierarchy instead of noise.",
     ],
     leftOut: [
-      "Highlights that turn into a feed, recommendations, and accounts. The page is for the text in front of you.",
+      "A CMS, a blog engine, and account flows. The site is a face, not a product suite.",
     ],
   },
   {
-    slug: "trace",
+    slug: "board",
+    index: "02",
+    title: "Board",
+    kind: "Interface",
+    stack: ["CSS", "HTML"],
+    repo: "https://github.com/MindPJL/trello-cloned",
+    summary:
+      "A Trello-inspired board built to understand columns, cards, and the feel of dragging work across a day.",
+    problem:
+      "Kanban UIs look simple until you build one. Spacing, drag affordances, and readable cards are the whole product.",
+    kept: [
+      "Columns that read as lanes, not boxes stacked for decoration.",
+      "CSS that carries most of the layout so the structure stays inspectable.",
+      "A clone that teaches the interaction, not a pixel-perfect replica.",
+    ],
+    leftOut: [
+      "Accounts, sync, and a backend. This is the board on the glass.",
+    ],
+  },
+  {
+    slug: "fluent",
     index: "03",
-    title: "Trace",
-    kind: "Systems",
-    stack: ["Go", "Terminal"],
+    title: "FluentMeet",
+    kind: "Interface",
+    stack: ["JavaScript"],
+    repo: "https://github.com/MindPJL/FluentMeet",
     summary:
-      "A log viewer that opens on the failing span and keeps the rest of the firehose folded until you mean to read it.",
+      "A meeting-room experiment in JavaScript — the flow of joining, waiting, and staying oriented in a call.",
     problem:
-      "When a request fails, the useful lines sit next to thousands that are not. Most viewers make you scroll, or they make you learn a query language before you can see the error.",
+      "Call UIs hide their worst moments: waiting rooms, empty states, and the second you lose track of who is speaking.",
     kept: [
-      "Group by request. The failing span starts expanded, with the few lines before it still attached.",
-      "Filters you can say out loud: service, status, since. If a filter needs a manual, it does not ship.",
-      "A terminal view and a plain-text export, so a trace can be pasted into a note without a screenshot.",
+      "Plain JavaScript so the control flow stays readable.",
+      "States named for what the person is doing, not what the socket said.",
+      "A small surface that can grow without rewriting the story.",
     ],
     leftOut: [
-      "A query language that wants to be SQL, dashboards, and alerting. Trace is for the minute something is already broken.",
+      "A full WebRTC stack and production infra. FluentMeet is the interface story first.",
     ],
   },
   {
-    slug: "field",
+    slug: "hash",
     index: "04",
-    title: "Field",
+    title: "Crypto Hash",
     kind: "Tool",
-    stack: ["TypeScript", "Markdown"],
+    stack: ["TypeScript"],
+    repo: "https://github.com/MindPJL/cypto-hash",
     summary:
-      "Notes that are a folder of Markdown. Search walks the files. Sync is whatever you already use for the rest of your disk.",
+      "A TypeScript hashing playground — feed a string, see the digest, keep the path short enough to trust.",
     problem:
-      "A notes app that needs an account has turned your sentences into someone else's database. Leaving means an export, and the export is usually the moment you find out what you do not own.",
+      "Hash tools online are either a black box or a wall of options. I wanted a thin path from input to digest.",
     kept: [
-      "One file per note. The name is a date plus a slug, so the folder sorts itself.",
-      "A search that reads the files. No index you have to rebuild before the note you just wrote shows up.",
-      "An editor that is a textarea and a preview. The file on disk is the product, not a cache of it.",
+      "TypeScript types around the inputs so mistakes show up early.",
+      "A short surface: pick an algorithm, paste text, read the result.",
+      "No account, no history server — the work stays on the device.",
     ],
     leftOut: [
-      "Collaboration, live cursors, and a custom sync engine. If the folder syncs, the notes sync.",
+      "Password managers, key storage, and anything that pretends to be a vault.",
     ],
   },
 ];

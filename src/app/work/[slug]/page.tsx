@@ -49,7 +49,7 @@ export default async function ProjectPage({
       </Link>
 
       <p className="mt-10 text-xs tracking-[0.16em] text-muted-foreground uppercase">
-        <span className="text-signal">Study</span>
+        <span className="text-signal">Project</span>
         <span className="px-2 text-border" aria-hidden="true">
           /
         </span>
@@ -61,6 +61,17 @@ export default async function ProjectPage({
       <p className="mt-6 max-w-2xl text-xl leading-relaxed text-pretty text-muted-foreground">
         {project.summary}
       </p>
+
+      {project.repo ? (
+        <a
+          href={project.repo}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 inline-flex text-sm underline decoration-foreground/30 underline-offset-4 hover:decoration-signal"
+        >
+          Open on GitHub ↗
+        </a>
+      ) : null}
 
       <div className="mt-10">
         <ProjectFigure slug={project.slug} />
@@ -114,7 +125,7 @@ export default async function ProjectPage({
         >
           <span>
             <span className="font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase">
-              Next study
+              Next project
             </span>
             <span className="mt-2 block font-display text-4xl tracking-tight uppercase sm:text-5xl">
               {next.title}

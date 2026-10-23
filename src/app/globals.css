@@ -321,6 +321,14 @@ h3 {
   animation: mind-pulse-glow 2.4s ease-in-out infinite;
 }
 
+.orbit-core {
+  animation: mind-pulse-glow 3.2s ease-in-out infinite;
+}
+
+.magnetic-surface {
+  transform-style: preserve-3d;
+}
+
 .scroll-cue-dot::after {
   content: "";
   position: absolute;

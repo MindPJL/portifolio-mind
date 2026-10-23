@@ -117,20 +117,28 @@ export default function Home() {
             </p>
             <div className="soft-enter-late mt-7 flex flex-col gap-3 sm:flex-row">
               <ArrowLink href="/#work">{t.hero.explore}</ArrowLink>
-              <ArrowLink href="/#pricing" variant="outline">
-                {t.hero.pricing}
+              <ArrowLink href="/languages" variant="outline">
+                {t.hero.languagesCta}
               </ArrowLink>
             </div>
             <div className="soft-enter-late mt-6 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <span>
-                {t.hero.buildsFrom}{" "}
-                <b className="font-medium text-[#e6d7e8]">$800</b>
+                <b className="font-medium text-[#e6d7e8]">{t.hero.negotiateHint}</b>
               </span>
               <span aria-hidden="true" className="size-1 rounded-full bg-muted-foreground" />
               <span>
                 {t.hero.clearScope} ·{" "}
                 <b className="font-medium text-[#e6d7e8]">{t.hero.honestDelivery}</b>
               </span>
+              <span aria-hidden="true" className="size-1 rounded-full bg-muted-foreground" />
+              <a
+                href={site.github}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-[#e6d7e8] underline decoration-white/20 underline-offset-4 hover:decoration-primary"
+              >
+                {site.githubUser}
+              </a>
             </div>
           </div>
 
@@ -151,7 +159,9 @@ export default function Home() {
               {t.hero.standOut}
             </div>
             <div className="float-soft-delay absolute bottom-[8%] left-0 flex items-center gap-3 rounded-[10px] border border-[#ffb7cb35] bg-[#2b172acc] px-4 py-3 backdrop-blur-md [animation-delay:-2s]">
-              <p className="font-display text-4xl font-bold leading-none">04</p>
+              <p className="font-display text-4xl font-bold leading-none">
+                {String(projects.length).padStart(2, "0")}
+              </p>
               <p className="max-w-[7rem] text-[10px] leading-relaxed tracking-[0.08em] text-[#d9bdd5] uppercase">
                 {t.hero.studiesShelf}
               </p>
@@ -182,7 +192,8 @@ export default function Home() {
         <Container className="grid items-center gap-10 lg:grid-cols-[auto_1.2fr_1fr]">
           <Reveal>
             <p className="font-display text-[clamp(4rem,8vw,6rem)] leading-none font-bold">
-              04<span className="text-primary">+</span>
+              {String(projects.length).padStart(2, "0")}
+              <span className="text-primary">+</span>
             </p>
             <p className="mt-2 text-xs tracking-[0.14em] text-muted-foreground uppercase">
               {t.snapshot.studies}
@@ -205,14 +216,15 @@ export default function Home() {
               {t.snapshot.stack}
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {["TypeScript", "React", "SQL", "Go", "Terminal"].map((item, index) => (
-                <span
+              {["TypeScript", "JavaScript", "Lua", "CSS", "HTML"].map((item, index) => (
+                <Link
                   key={item}
-                  className="chip-pop rounded-full border border-white/15 bg-[#201723] px-4 py-2 text-sm"
+                  href="/languages"
+                  className="chip-pop rounded-full border border-white/15 bg-[#201723] px-4 py-2 text-sm transition-colors hover:border-primary hover:text-foreground"
                   style={{ animationDelay: `${index * 80}ms` }}
                 >
                   {item}
-                </span>
+                </Link>
               ))}
             </div>
           </Reveal>
@@ -269,7 +281,10 @@ export default function Home() {
                 </div>
                 <div className="mt-8 grid gap-6 sm:grid-cols-3">
                   {[
-                    { value: "04", label: t.results.shelf },
+                    {
+                      value: String(projects.length).padStart(2, "0"),
+                      label: t.results.shelf,
+                    },
                     { value: "03", label: t.results.rules },
                     { value: "05", label: t.results.tools },
                   ].map((item) => (
@@ -282,7 +297,7 @@ export default function Home() {
                   ))}
                 </div>
                 <div className="mt-8 overflow-hidden rounded-xl border border-border">
-                  <ProjectFigure slug="trace" className="border-0" />
+                  <ProjectFigure slug="docinho" className="border-0" />
                 </div>
                 <p className="mt-4 text-xs text-muted-foreground">{t.results.note}</p>
               </article>
@@ -367,15 +382,15 @@ export default function Home() {
         </Container>
       </section>
 
-      <section id="pricing" data-section className="scroll-mt-28 border-t border-border py-20 sm:py-28">
+      <section id="work-with" data-section className="scroll-mt-28 border-t border-border py-20 sm:py-28">
         <Container>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <Reveal className="flex-1">
               <SectionLabel
-                index={t.pricing.index}
-                title={t.pricing.title}
-                accent={t.pricing.accent}
-                lede={t.pricing.lede}
+                index={t.negotiate.index}
+                title={t.negotiate.title}
+                accent={t.negotiate.accent}
+                lede={t.negotiate.lede}
               />
             </Reveal>
             <Reveal delay={120}>
@@ -385,64 +400,30 @@ export default function Home() {
                   className="relative size-11 rounded-full border border-[#ffad9570] before:absolute before:top-2.5 before:left-5 before:h-3 before:w-2.5 before:border-b-2 before:border-l-2 before:border-coral"
                 />
                 <div>
-                  <p className="text-lg font-semibold">{t.pricing.clearTitle}</p>
-                  <p className="text-sm text-muted-foreground">{t.pricing.clearBody}</p>
+                  <p className="text-lg font-semibold">{t.negotiate.clearTitle}</p>
+                  <p className="text-sm text-muted-foreground">{t.negotiate.clearBody}</p>
                 </div>
               </div>
             </Reveal>
           </div>
           <div className="mt-12 grid gap-4 lg:grid-cols-3">
-            {t.engagements.map((item, index) => (
-              <Reveal key={item.name} delay={index * 100}>
-                <article
-                  className={`bento-card relative flex h-full flex-col overflow-hidden rounded-2xl border p-7 ${
-                    item.featured
-                      ? "border-primary bg-gradient-to-b from-[#2a1624] to-card"
-                      : "border-border bg-card"
-                  }`}
-                >
-                  {item.featured ? (
-                    <p className="absolute top-4 right-4 rounded-full bg-primary px-3 py-1 text-[10px] font-bold tracking-[0.12em] text-primary-foreground uppercase">
-                      {t.pricing.mostChosen}
-                    </p>
-                  ) : null}
-                  <p className="text-xs tracking-[0.14em] text-muted-foreground uppercase">
-                    {item.length}
+            {t.negotiate.points.map((item, index) => (
+              <Reveal key={item.title} delay={index * 100}>
+                <article className="bento-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-7">
+                  <p className="text-xs tracking-[0.14em] text-primary uppercase">
+                    {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h3 className="mt-3 font-display text-4xl uppercase">{item.name}</h3>
-                  <p className="mt-4 font-display text-5xl font-bold">{item.price}</p>
-                  <p className="mt-1 text-xs tracking-[0.12em] text-muted-foreground uppercase">
-                    {item.unit}
+                  <h3 className="mt-3 font-display text-3xl uppercase">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {item.body}
                   </p>
-                  <dl className="mt-6 flex flex-1 flex-col gap-4 border-t border-border pt-5 text-sm">
-                    <div>
-                      <dt className="text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
-                        {t.pricing.youGet}
-                      </dt>
-                      <dd className="mt-1">{item.get}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
-                        {t.pricing.leftOut}
-                      </dt>
-                      <dd className="mt-1 text-muted-foreground">{item.leave}</dd>
-                    </div>
-                  </dl>
-                  <ArrowLink
-                    href={contactHref}
-                    variant={item.featured ? "solid" : "outline"}
-                    className="mt-6 w-full"
-                  >
-                    {t.pricing.startNote}
-                  </ArrowLink>
                 </article>
               </Reveal>
             ))}
           </div>
-          <Reveal delay={200}>
-            <p className="mt-6 rounded-2xl border border-dashed border-white/20 bg-[#201723]/60 px-5 py-4 text-sm text-muted-foreground">
-              {t.pricing.bulk}
-            </p>
+          <Reveal delay={200} className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <ArrowLink href={contactHref}>{t.negotiate.cta}</ArrowLink>
+            <p className="max-w-xl text-sm text-muted-foreground">{t.negotiate.note}</p>
           </Reveal>
         </Container>
       </section>
@@ -479,12 +460,22 @@ export default function Home() {
                 </div>
               </div>
               <p className="mt-6 max-w-sm text-[#ffd1ca]">{t.contact.body}</p>
-              <Link
-                href="/about"
-                className="mt-6 inline-flex text-sm underline decoration-[#ffd1ca]/50 underline-offset-4 hover:decoration-foreground"
-              >
-                {t.contact.longer}
-              </Link>
+              <div className="mt-6 flex flex-wrap gap-4 text-sm">
+                <Link
+                  href="/about"
+                  className="underline decoration-[#ffd1ca]/50 underline-offset-4 hover:decoration-foreground"
+                >
+                  {t.contact.longer}
+                </Link>
+                <a
+                  href={site.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline decoration-[#ffd1ca]/50 underline-offset-4 hover:decoration-foreground"
+                >
+                  {t.onGithub}
+                </a>
+              </div>
             </Reveal>
             <Reveal delay={140} variant="scale">
               <div className="rounded-2xl border border-white/20 bg-[#160f19ee] p-5 sm:p-7">

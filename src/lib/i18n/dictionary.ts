@@ -15,13 +15,15 @@ export type Dictionary = {
     work: string;
     results: string;
     process: string;
-    pricing: string;
+    languages: string;
     contact: string;
   };
   ctaTalk: string;
   ctaNote: string;
   menu: string;
   close: string;
+  github: string;
+  onGithub: string;
   gate: {
     kicker: string;
     title: string;
@@ -45,8 +47,8 @@ export type Dictionary = {
     description1: string;
     description2: string;
     explore: string;
-    pricing: string;
-    buildsFrom: string;
+    languagesCta: string;
+    negotiateHint: string;
     clearScope: string;
     honestDelivery: string;
     standOut: string;
@@ -68,7 +70,7 @@ export type Dictionary = {
     title: string;
     accent: string;
     lede: string;
-    viewPricing: string;
+    viewLanguages: string;
     empty: string;
     foot: string;
     kinds: string;
@@ -81,6 +83,7 @@ export type Dictionary = {
     studiesCount: string;
     studyCount: string;
     none: string;
+    openRepo: string;
   };
   results: {
     index: string;
@@ -115,18 +118,16 @@ export type Dictionary = {
     next: string;
     keys: string;
   };
-  pricing: {
+  negotiate: {
     index: string;
     title: string;
     accent: string;
     lede: string;
     clearTitle: string;
     clearBody: string;
-    mostChosen: string;
-    youGet: string;
-    leftOut: string;
-    startNote: string;
-    bulk: string;
+    points: { title: string; body: string }[];
+    cta: string;
+    note: string;
   };
   contact: {
     index: string;
@@ -134,6 +135,34 @@ export type Dictionary = {
     title2: string;
     body: string;
     longer: string;
+  };
+  languagesPage: {
+    kicker: string;
+    title: string;
+    accent: string;
+    lede: string;
+    pick: string;
+    level: { core: string; strong: string; solid: string };
+    focus: string;
+    sample: string;
+    githubNote: string;
+    details: Record<
+      string,
+      { blurb: string; use: string; sample: string }
+    >;
+  };
+  aboutPage: {
+    kicker: string;
+    title: string;
+    p1: string;
+    p2: string;
+    p3: string;
+    p4: string;
+    toolsTitle: string;
+    tools: { name: string; detail: string }[];
+    ruleCaption: string;
+    seeWork: string;
+    writeNote: string;
   };
   form: {
     name: string;
@@ -173,19 +202,132 @@ export type Dictionary = {
   marquee: string[];
   practice: { index: string; title: string; body: string }[];
   processSteps: { index: string; title: string; body: string }[];
-  engagements: {
-    name: string;
-    price: string;
-    unit: string;
-    length: string;
-    get: string;
-    leave: string;
-    featured: boolean;
-  }[];
   projects: Record<string, ProjectCopy>;
   projectTitles: Record<string, string>;
   aboutLink: string;
   footerYear: string;
+};
+
+const enProjects: Record<string, ProjectCopy> = {
+  docinho: {
+    kind: "Interface",
+    summary:
+      "A portfolio surface for a real brand — layout, type, and motion that introduce someone before they say a word.",
+    problem:
+      "A portfolio that looks like a template disappears. The person behind it needs a first screen that feels specific.",
+    kept: [
+      "A clear hero and a path through the work without drowning the visitor in chrome.",
+      "TypeScript end to end, so the structure stays honest as the pages grow.",
+      "Motion that points at hierarchy instead of noise.",
+    ],
+    leftOut: [
+      "A CMS, a blog engine, and account flows. The site is a face, not a product suite.",
+    ],
+  },
+  board: {
+    kind: "Interface",
+    summary:
+      "A Trello-inspired board built to understand columns, cards, and the feel of dragging work across a day.",
+    problem:
+      "Kanban UIs look simple until you build one. Spacing, drag affordances, and readable cards are the whole product.",
+    kept: [
+      "Columns that read as lanes, not boxes stacked for decoration.",
+      "CSS that carries most of the layout so the structure stays inspectable.",
+      "A clone that teaches the interaction, not a pixel-perfect replica.",
+    ],
+    leftOut: ["Accounts, sync, and a backend. This is the board on the glass."],
+  },
+  fluent: {
+    kind: "Interface",
+    summary:
+      "A meeting-room experiment in JavaScript — the flow of joining, waiting, and staying oriented in a call.",
+    problem:
+      "Call UIs hide their worst moments: waiting rooms, empty states, and the second you lose track of who is speaking.",
+    kept: [
+      "Plain JavaScript so the control flow stays readable.",
+      "States named for what the person is doing, not what the socket said.",
+      "A small surface that can grow without rewriting the story.",
+    ],
+    leftOut: [
+      "A full WebRTC stack and production infra. FluentMeet is the interface story first.",
+    ],
+  },
+  hash: {
+    kind: "Tool",
+    summary:
+      "A TypeScript hashing playground — feed a string, see the digest, keep the path short enough to trust.",
+    problem:
+      "Hash tools online are either a black box or a wall of options. I wanted a thin path from input to digest.",
+    kept: [
+      "TypeScript types around the inputs so mistakes show up early.",
+      "A short surface: pick an algorithm, paste text, read the result.",
+      "No account, no history server — the work stays on the device.",
+    ],
+    leftOut: [
+      "Password managers, key storage, and anything that pretends to be a vault.",
+    ],
+  },
+};
+
+const ptProjects: Record<string, ProjectCopy> = {
+  docinho: {
+    kind: "Interface",
+    summary:
+      "Uma superfície de portfólio para uma marca real — layout, tipo e movimento que apresentam alguém antes de uma palavra.",
+    problem:
+      "Um portfólio que parece template some. A pessoa por trás precisa de uma primeira tela que pareça específica.",
+    kept: [
+      "Um hero claro e um caminho pelo trabalho sem afogar o visitante em chrome.",
+      "TypeScript de ponta a ponta, para a estrutura ficar honesta enquanto as páginas crescem.",
+      "Movimento que aponta hierarquia, não barulho.",
+    ],
+    leftOut: [
+      "CMS, blog e contas. O site é um rosto, não um suite de produto.",
+    ],
+  },
+  board: {
+    kind: "Interface",
+    summary:
+      "Um board inspirado no Trello para entender colunas, cards e a sensação de arrastar o trabalho pelo dia.",
+    problem:
+      "UIs de kanban parecem simples até você construir uma. Espaço, arraste e cards legíveis são o produto inteiro.",
+    kept: [
+      "Colunas que leem como faixas, não caixas empilhadas por decoração.",
+      "CSS que carrega a maior parte do layout para a estrutura ficar inspecionável.",
+      "Um clone que ensina a interação, não uma réplica pixel-perfect.",
+    ],
+    leftOut: ["Contas, sync e backend. Isto é o board no vidro."],
+  },
+  fluent: {
+    kind: "Interface",
+    summary:
+      "Um experimento de sala de reunião em JavaScript — o fluxo de entrar, esperar e continuar orientado numa call.",
+    problem:
+      "UIs de call escondem os piores momentos: salas de espera, estados vazios e o segundo em que você perde quem fala.",
+    kept: [
+      "JavaScript puro para o fluxo de controle continuar legível.",
+      "Estados nomeados pelo que a pessoa está fazendo, não pelo que o socket disse.",
+      "Uma superfície pequena que pode crescer sem reescrever a história.",
+    ],
+    leftOut: [
+      "Stack WebRTC completa e infra de produção. FluentMeet é a história da interface primeiro.",
+    ],
+  },
+  hash: {
+    kind: "Tool",
+    summary:
+      "Um playground de hashing em TypeScript — entra uma string, sai o digest, caminho curto o bastante para confiar.",
+    problem:
+      "Ferramentas de hash online são caixa-preta ou muro de opções. Eu queria um caminho fino da entrada ao digest.",
+    kept: [
+      "Tipos TypeScript em volta das entradas para o erro aparecer cedo.",
+      "Uma superfície curta: escolha o algoritmo, cole o texto, leia o resultado.",
+      "Sem conta, sem servidor de histórico — o trabalho fica no dispositivo.",
+    ],
+    leftOut: [
+      "Gerenciadores de senha, cofres e qualquer coisa que finja ser vault.",
+    ],
+  },
 };
 
 const en: Dictionary = {
@@ -195,13 +337,15 @@ const en: Dictionary = {
     work: "Work",
     results: "Results",
     process: "Process",
-    pricing: "Pricing",
+    languages: "Languages",
     contact: "Contact",
   },
   ctaTalk: "Let’s talk",
   ctaNote: "Note",
   menu: "Menu",
   close: "Close",
+  github: "GitHub",
+  onGithub: "Open on GitHub",
   gate: {
     kicker: "Mind / Portfolio",
     title: "Choose your language",
@@ -218,61 +362,62 @@ const en: Dictionary = {
     scroll: "Scroll to explore",
   },
   hero: {
-    kicker: "Interfaces · Systems · Tools",
+    kicker: "Interfaces · Games · Tools",
     line1: "Your product.",
     line2: "Their next",
     line3: "obsession.",
-    description1: "Big ideas deserve software that still makes sense later.",
-    description2: "Let’s make yours impossible to abandon.",
+    description1: "Curious builder. Most of my work stays private.",
+    description2: "What’s public lives on GitHub — TypeScript, JS, Lua, and the browser.",
     explore: "Explore my work",
-    pricing: "See pricing",
-    buildsFrom: "Builds from",
+    languagesCta: "See my languages",
+    negotiateHint: "Scope & price are negotiated",
     clearScope: "Clear scope",
     honestDelivery: "honest delivery",
     standOut: "Made to stand out",
-    studiesShelf: "Studies on the shelf",
+    studiesShelf: "Public projects on the shelf",
     independent: "Independent programmer",
     scroll: "Scroll to explore",
     details: "Built in the details",
   },
   snapshot: {
-    studies: "Studies",
-    delivered: "delivered",
-    eyebrow: "Big systems. Small details.",
-    title1: "Worked across products",
-    title2: "people actually open.",
-    stack: "Daily stack",
+    studies: "Public",
+    delivered: "projects",
+    eyebrow: "Curious. Focused. Most of it private.",
+    title1: "Building for the web",
+    title2: "and for games-adjacent systems.",
+    stack: "Principal stack",
   },
   work: {
     index: "01 / The first impression",
     title: "Small frame.",
     accent: "Big energy.",
-    lede: "Your product has a story. Give people a reason to step inside — and a way to stay.",
-    viewPricing: "View pricing",
+    lede: "Public pieces from github.com/MindPJL. Most of my work stays private — these are the ones you can open.",
+    viewLanguages: "See languages",
     empty: "Nothing filed under this filter yet.",
-    foot: "Thumbnails of the work. Open any study for the full note.",
-    kinds: "Studies / Interfaces / Systems / Tools",
+    foot: "Open any project for the full note, or jump to the repo on GitHub.",
+    kinds: "Public / Interfaces / Tools",
     filters: {
-      all: "Studies",
+      all: "All",
       interface: "Interface",
       systems: "Systems",
       tool: "Tool",
     },
-    studiesCount: "studies",
-    studyCount: "study",
+    studiesCount: "projects",
+    studyCount: "project",
     none: "Nothing filed here",
+    openRepo: "Repository",
   },
   results: {
     index: "02 / More than a good look",
     title: "Make the click.",
     accent: "Move the needle.",
     lede: "A better first impression. A stronger reason to keep building — and to come back.",
-    numbers: "The numbers behind the work",
-    pause: "Pause results",
-    shelf: "Studies on the shelf",
+    numbers: "What sits on the shelf",
+    pause: "Public work",
+    shelf: "Public projects",
     rules: "Rules I keep",
-    tools: "Tools I reach for",
-    note: "Results from this site’s own shelf. The curve is a comparison, not a promise.",
+    tools: "Languages I reach for",
+    note: "Numbers from this site’s own shelf. Private work stays off the page.",
   },
   process: {
     index: "03 / Simple from start to finish",
@@ -296,25 +441,112 @@ const en: Dictionary = {
     next: "Next",
     keys: "Esc to close · arrows to move",
   },
-  pricing: {
-    index: "05 / Good work. Clear prices.",
-    title: "Big impact.",
-    accent: "No guesswork.",
-    lede: "From idea to a build you can open later. Starting points — the real number depends on the shape of the work.",
-    clearTitle: "Clear from the start.",
-    clearBody: "Scope, timing, and what’s left out — said out loud.",
-    mostChosen: "Most chosen",
-    youGet: "You get",
-    leftOut: "Left out",
-    startNote: "Start with a note",
-    bulk: "Save time when ordering more than one pass. Mix a read and a build however you like — we’ll confirm brief, timing, and availability in a note.",
+  negotiate: {
+    index: "05 / Good work. Fair terms.",
+    title: "Let’s negotiate.",
+    accent: "No fixed price list.",
+    lede: "Every build has a different shape. We talk scope, timing, and budget together — nothing is locked until it makes sense for both of us.",
+    clearTitle: "Talk first. Quote second.",
+    clearBody: "Tell me what you need. I’ll answer with what’s possible, what’s hard, and a number that fits.",
+    points: [
+      {
+        title: "Tell me the brief",
+        body: "What you’re building, what’s broken, and when it needs to land.",
+      },
+      {
+        title: "We shape the scope",
+        body: "What’s in, what’s out, and the first milestone that proves direction.",
+      },
+      {
+        title: "Agree the terms",
+        body: "Budget, timing, and how we stay in sync — written plainly before work starts.",
+      },
+    ],
+    cta: "Start the conversation",
+    note: "No rate card on this site. Price comes from the conversation — honest, specific, and renegotiable if the work changes.",
   },
   contact: {
     index: "06 / Your next level starts here",
     title1: "Let’s make",
     title2: "them look.",
-    body: "Your idea. My next project. A short note is enough — tell me what you’re building or what broke.",
+    body: "I’m Mind (MindPJL). A short note is enough — tell me what you’re building or what broke. You can also find me on GitHub.",
     longer: "Read the longer note",
+  },
+  languagesPage: {
+    kicker: "Stack",
+    title: "The languages",
+    accent: "I actually use.",
+    lede: "Principal languages from the work I ship. Hover or tap a node — the orbit follows your cursor.",
+    pick: "Pick a language",
+    level: {
+      core: "Core",
+      strong: "Strong",
+      solid: "Solid",
+    },
+    focus: "Focus",
+    sample: "Taste of the syntax",
+    githubNote: "See public repos on GitHub →",
+    details: {
+      typescript: {
+        blurb: "Where I spend most days — typed interfaces, tools, and anything that has to stay honest as it grows.",
+        use: "Apps, CLIs, and the glue between UI and data.",
+        sample: "type Result<T> = { ok: true; value: T } | { ok: false; error: string }",
+      },
+      javascript: {
+        blurb: "The runtime language of the browser and a lot of game-adjacent tooling. Fast to sketch, sharp when kept small.",
+        use: "Interfaces, prototypes, and scripts that need to move now.",
+        sample: "const ready = nodes.filter((n) => n.isConnected)",
+      },
+      lua: {
+        blurb: "Light, embeddable, and common around games. I reach for it when the host already speaks Lua.",
+        use: "Game scripts, tooling, and small systems that live inside a larger runtime.",
+        sample: "local function clamp(n, lo, hi) return math.max(lo, math.min(hi, n)) end",
+      },
+      css: {
+        blurb: "Layout, type, motion, and the states a screen usually forgets. CSS is half the product when the UI matters.",
+        use: "Responsive layouts, motion, and the feel of a surface.",
+        sample: ".reveal { opacity: 0; transform: translateY(2rem); }",
+      },
+      html: {
+        blurb: "The bones. Semantics first so the page stays usable without the stylesheet winning every fight.",
+        use: "Structure, accessibility, and content that outlives a theme.",
+        sample: '<main id="content" tabindex="-1">…</main>',
+      },
+    },
+  },
+  aboutPage: {
+    kicker: "About",
+    title: "How I like to work.",
+    p1: "I am Mind — MindPJL on GitHub. A curious guy having fun, building interfaces and systems, often around games.",
+    p2: "Most of my projects stay private. What’s public is on GitHub: TypeScript portfolios, a board clone, a meeting experiment, hashing tools, and more as I open them.",
+    p3: "I care about names you can trust, failures that explain themselves, and software you can leave without a tour guide.",
+    p4: "If you want to work together, we negotiate scope and price in a conversation — no fixed menu on this site.",
+    toolsTitle: "What I reach for",
+    tools: [
+      {
+        name: "TypeScript",
+        detail: "When people and other programs both have to trust the same code.",
+      },
+      {
+        name: "JavaScript",
+        detail: "For the browser, prototypes, and anything that needs to move quickly.",
+      },
+      {
+        name: "Lua",
+        detail: "When the host already speaks it — games and embedded tooling.",
+      },
+      {
+        name: "CSS & HTML",
+        detail: "Layout, type, and the empty / wrong / waiting states a screen usually forgets.",
+      },
+      {
+        name: "GitHub",
+        detail: "Public work at github.com/MindPJL. Discord for the people who already know the server.",
+      },
+    ],
+    ruleCaption: "A rule I keep close to the editor",
+    seeWork: "See the work",
+    writeNote: "Write a note",
   },
   form: {
     name: "Name",
@@ -352,12 +584,12 @@ const en: Dictionary = {
     footer: "A sample thread. Nothing here is sent.",
   },
   marquee: [
+    "TYPESCRIPT",
+    "JAVASCRIPT",
+    "LUA",
     "CLEAR NAMES",
-    "SMALL PARTS",
     "HONEST ERRORS",
-    "PLAIN FILES",
-    "A WAY OUT",
-    "EMPTY, WRONG, WAITING",
+    "MOSTLY PRIVATE",
   ],
   practice: [
     {
@@ -398,105 +630,14 @@ const en: Dictionary = {
       body: "Working software, with the edge cases written in — not left for later.",
     },
   ],
-  engagements: [
-    {
-      name: "Read",
-      price: "$800",
-      unit: "starting",
-      length: "A few days",
-      get: "A written pass on something that already exists.",
-      leave: "No new product. Names, failures, and the next change.",
-      featured: false,
-    },
-    {
-      name: "Build",
-      price: "$6,000",
-      unit: "starting",
-      length: "Under a focused build",
-      get: "Working software with empty, wrong, and waiting states included.",
-      leave: "No platform, no pitch deck, no leftover ceremony.",
-      featured: true,
-    },
-    {
-      name: "Keep",
-      price: "$2,400",
-      unit: "a month, starting",
-      length: "Ongoing",
-      get: "The middle of a system, kept honest after the first version ships.",
-      leave: "Not a ticket queue. A standing agreement about what stays clear.",
-      featured: false,
-    },
-  ],
   projectTitles: {
-    ledger: "Ledger",
-    quiet: "Quiet",
-    trace: "Trace",
-    field: "Field",
+    docinho: "Docinho",
+    board: "Board",
+    fluent: "FluentMeet",
+    hash: "Crypto Hash",
     mark: "Mark",
   },
-  projects: {
-    ledger: {
-      kind: "Tool",
-      summary:
-        "A personal ledger that keeps every amount as whole cents and every change as a line you can read back.",
-      problem:
-        "Spreadsheets hide the moment a number stopped being true. A cell gets overwritten, a formula drifts, and the total still looks confident.",
-      kept: [
-        "Amounts are integers in minor units. No floating point on the path that adds money.",
-        "Entries are append-only. A correction is a new line, not an edit that erases the old one.",
-        "The balance is a fold over the log. It is never a stored column that can drift away from the entries.",
-      ],
-      leftOut: [
-        "Bank connections, budgets, and charts. Those can wait until the record itself is trustworthy.",
-        "Multiple currencies in the first version. One unit, named out loud, is enough to prove the model.",
-      ],
-    },
-    quiet: {
-      kind: "Interface",
-      summary:
-        "A reading surface with one column, a type size you set once, and progress that does not announce itself.",
-      problem:
-        "Reading on a screen is usually a negotiation with chrome. The text shares the room with badges, recommendations, and a bar that wants credit for your attention.",
-      kept: [
-        "A measure of about sixty-six characters, a short type ramp, and margins that stay wide when the window gets large.",
-        "Position stored with the document, not in an account. Close the tab, come back, and the sentence is where you left it.",
-        "Controls that appear when you ask and leave when you are reading.",
-      ],
-      leftOut: [
-        "Highlights that turn into a feed, recommendations, and accounts. The page is for the text in front of you.",
-      ],
-    },
-    trace: {
-      kind: "Systems",
-      summary:
-        "A log viewer that opens on the failing span and keeps the rest of the firehose folded until you mean to read it.",
-      problem:
-        "When a request fails, the useful lines sit next to thousands that are not. Most viewers make you scroll, or they make you learn a query language before you can see the error.",
-      kept: [
-        "Group by request. The failing span starts expanded, with the few lines before it still attached.",
-        "Filters you can say out loud: service, status, since. If a filter needs a manual, it does not ship.",
-        "A terminal view and a plain-text export, so a trace can be pasted into a note without a screenshot.",
-      ],
-      leftOut: [
-        "A query language that wants to be SQL, dashboards, and alerting. Trace is for the minute something is already broken.",
-      ],
-    },
-    field: {
-      kind: "Tool",
-      summary:
-        "Notes that are a folder of Markdown. Search walks the files. Sync is whatever you already use for the rest of your disk.",
-      problem:
-        "A notes app that needs an account has turned your sentences into someone else's database. Leaving means an export, and the export is usually the moment you find out what you do not own.",
-      kept: [
-        "One file per note. The name is a date plus a slug, so the folder sorts itself.",
-        "A search that reads the files. No index you have to rebuild before the note you just wrote shows up.",
-        "An editor that is a textarea and a preview. The file on disk is the product, not a cache of it.",
-      ],
-      leftOut: [
-        "Collaboration, live cursors, and a custom sync engine. If the folder syncs, the notes sync.",
-      ],
-    },
-  },
+  projects: enProjects,
   aboutLink: "Read the longer note",
   footerYear: "2026",
 };
@@ -508,13 +649,15 @@ const pt: Dictionary = {
     work: "Trabalho",
     results: "Resultados",
     process: "Processo",
-    pricing: "Preços",
+    languages: "Linguagens",
     contact: "Contato",
   },
   ctaTalk: "Vamos conversar",
   ctaNote: "Nota",
   menu: "Menu",
   close: "Fechar",
+  github: "GitHub",
+  onGithub: "Abrir no GitHub",
   gate: {
     kicker: "Mind / Portfólio",
     title: "Escolha o idioma",
@@ -531,61 +674,62 @@ const pt: Dictionary = {
     scroll: "Role para explorar",
   },
   hero: {
-    kicker: "Interfaces · Sistemas · Ferramentas",
+    kicker: "Interfaces · Games · Ferramentas",
     line1: "Seu produto.",
     line2: "A próxima",
     line3: "obsessão deles.",
-    description1: "Grandes ideias merecem software que ainda faz sentido depois.",
-    description2: "Vamos fazer o seu impossível de abandonar.",
+    description1: "Construtor curioso. A maior parte do meu trabalho fica privada.",
+    description2: "O que é público mora no GitHub — TypeScript, JS, Lua e o browser.",
     explore: "Ver meu trabalho",
-    pricing: "Ver preços",
-    buildsFrom: "Builds a partir de",
+    languagesCta: "Ver minhas linguagens",
+    negotiateHint: "Escopo e preço são negociados",
     clearScope: "Escopo claro",
     honestDelivery: "entrega honesta",
     standOut: "Feito para destacar",
-    studiesShelf: "Estudos na prateleira",
+    studiesShelf: "Projetos públicos na prateleira",
     independent: "Programador independente",
     scroll: "Role para explorar",
     details: "Construído nos detalhes",
   },
   snapshot: {
-    studies: "Estudos",
-    delivered: "entregues",
-    eyebrow: "Sistemas grandes. Detalhes pequenos.",
-    title1: "Trabalhei em produtos",
-    title2: "que as pessoas realmente abrem.",
-    stack: "Stack do dia",
+    studies: "Projetos",
+    delivered: "públicos",
+    eyebrow: "Curioso. Focado. A maior parte privada.",
+    title1: "Construindo para a web",
+    title2: "e para sistemas perto de games.",
+    stack: "Stack principal",
   },
   work: {
     index: "01 / A primeira impressão",
     title: "Quadro pequeno.",
     accent: "Energia grande.",
-    lede: "Seu produto tem uma história. Dê às pessoas um motivo para entrar — e um jeito de ficar.",
-    viewPricing: "Ver preços",
+    lede: "Peças públicas de github.com/MindPJL. A maior parte do meu trabalho fica privada — estas você pode abrir.",
+    viewLanguages: "Ver linguagens",
     empty: "Nada arquivado neste filtro ainda.",
-    foot: "Miniaturas do trabalho. Abra qualquer estudo para a nota completa.",
-    kinds: "Estudos / Interfaces / Sistemas / Ferramentas",
+    foot: "Abra qualquer projeto para a nota completa, ou vá ao repositório no GitHub.",
+    kinds: "Público / Interfaces / Ferramentas",
     filters: {
-      all: "Estudos",
+      all: "Tudo",
       interface: "Interface",
       systems: "Sistemas",
       tool: "Ferramenta",
     },
-    studiesCount: "estudos",
-    studyCount: "estudo",
+    studiesCount: "projetos",
+    studyCount: "projeto",
     none: "Nada por aqui",
+    openRepo: "Repositório",
   },
   results: {
     index: "02 / Mais do que uma boa aparência",
     title: "Faça o clique.",
     accent: "Mova a agulha.",
     lede: "Uma primeira impressão melhor. Um motivo mais forte para continuar construindo — e voltar.",
-    numbers: "Os números por trás do trabalho",
-    pause: "Pausar resultados",
-    shelf: "Estudos na prateleira",
+    numbers: "O que está na prateleira",
+    pause: "Trabalho público",
+    shelf: "Projetos públicos",
     rules: "Regras que eu sigo",
-    tools: "Ferramentas que uso",
-    note: "Resultados da própria prateleira deste site. A curva é uma comparação, não uma promessa.",
+    tools: "Linguagens que uso",
+    note: "Números da própria prateleira deste site. Trabalho privado fica fora da página.",
   },
   process: {
     index: "03 / Simples do começo ao fim",
@@ -609,25 +753,112 @@ const pt: Dictionary = {
     next: "Próxima",
     keys: "Esc para fechar · setas para navegar",
   },
-  pricing: {
-    index: "05 / Bom trabalho. Preços claros.",
-    title: "Grande impacto.",
-    accent: "Sem achismos.",
-    lede: "Da ideia a um build que você abre depois. Pontos de partida — o número real depende do formato do trabalho.",
-    clearTitle: "Claro desde o início.",
-    clearBody: "Escopo, prazo e o que fica de fora — dito em voz alta.",
-    mostChosen: "Mais escolhido",
-    youGet: "Você leva",
-    leftOut: "De fora",
-    startNote: "Começar com uma nota",
-    bulk: "Economize tempo pedindo mais de uma passagem. Misture uma leitura e um build como quiser — confirmamos briefing, prazo e disponibilidade numa nota.",
+  negotiate: {
+    index: "05 / Bom trabalho. Termos justos.",
+    title: "Vamos negociar.",
+    accent: "Sem lista de preços fixa.",
+    lede: "Cada build tem um formato diferente. Conversamos escopo, prazo e orçamento juntos — nada trava até fazer sentido para os dois.",
+    clearTitle: "Conversa primeiro. Proposta depois.",
+    clearBody: "Diga o que precisa. Eu respondo com o que é possível, o que é difícil e um número que encaixa.",
+    points: [
+      {
+        title: "Mande o briefing",
+        body: "O que você está construindo, o que quebrou e quando precisa estar pronto.",
+      },
+      {
+        title: "Moldamos o escopo",
+        body: "O que entra, o que fica de fora e o primeiro marco que prova a direção.",
+      },
+      {
+        title: "Alinhamos os termos",
+        body: "Orçamento, prazo e como ficamos em sync — escrito com clareza antes de começar.",
+      },
+    ],
+    cta: "Começar a conversa",
+    note: "Não há tabela de preços neste site. O valor vem da conversa — honesto, específico e renegociável se o trabalho mudar.",
   },
   contact: {
     index: "06 / Seu próximo nível começa aqui",
     title1: "Vamos fazer",
     title2: "eles olharem.",
-    body: "Sua ideia. Meu próximo projeto. Uma nota curta basta — diga o que está construindo ou o que quebrou.",
+    body: "Eu sou o Mind (MindPJL). Uma nota curta basta — diga o que está construindo ou o que quebrou. Também estou no GitHub.",
     longer: "Ler a nota mais longa",
+  },
+  languagesPage: {
+    kicker: "Stack",
+    title: "As linguagens",
+    accent: "que eu realmente uso.",
+    lede: "Linguagens principais do trabalho que eu entrego. Passe o cursor ou toque num nó — a órbita segue você.",
+    pick: "Escolha uma linguagem",
+    level: {
+      core: "Núcleo",
+      strong: "Forte",
+      solid: "Sólido",
+    },
+    focus: "Foco",
+    sample: "Um gostinho da sintaxe",
+    githubNote: "Ver repositórios públicos no GitHub →",
+    details: {
+      typescript: {
+        blurb: "Onde passo a maior parte dos dias — interfaces tipadas, ferramentas e qualquer coisa que precisa continuar honesta enquanto cresce.",
+        use: "Apps, CLIs e a cola entre UI e dados.",
+        sample: "type Result<T> = { ok: true; value: T } | { ok: false; error: string }",
+      },
+      javascript: {
+        blurb: "A linguagem de runtime do browser e de muita ferramenta perto de games. Rápida para esboçar, afiada quando fica pequena.",
+        use: "Interfaces, protótipos e scripts que precisam andar agora.",
+        sample: "const ready = nodes.filter((n) => n.isConnected)",
+      },
+      lua: {
+        blurb: "Leve, embutível e comum em torno de games. Uso quando o host já fala Lua.",
+        use: "Scripts de game, tooling e sistemas pequenos dentro de um runtime maior.",
+        sample: "local function clamp(n, lo, hi) return math.max(lo, math.min(hi, n)) end",
+      },
+      css: {
+        blurb: "Layout, tipo, movimento e os estados que a tela costuma esquecer. CSS é metade do produto quando a UI importa.",
+        use: "Layouts responsivos, motion e a sensação de uma superfície.",
+        sample: ".reveal { opacity: 0; transform: translateY(2rem); }",
+      },
+      html: {
+        blurb: "Os ossos. Semântica primeiro para a página continuar usável sem o stylesheet ganhar toda briga.",
+        use: "Estrutura, acessibilidade e conteúdo que sobrevive a um tema.",
+        sample: '<main id="content" tabindex="-1">…</main>',
+      },
+    },
+  },
+  aboutPage: {
+    kicker: "Sobre",
+    title: "Como eu gosto de trabalhar.",
+    p1: "Eu sou o Mind — MindPJL no GitHub. Um cara curioso se divertindo, construindo interfaces e sistemas, muitas vezes perto de games.",
+    p2: "A maior parte dos meus projetos fica privada. O que é público está no GitHub: portfólios em TypeScript, um clone de board, um experimento de reunião, ferramentas de hashing e mais conforme eu for abrindo.",
+    p3: "Me importo com nomes em que se confia, falhas que se explicam e software que você deixa sem precisar de um guia.",
+    p4: "Se quiser trabalhar junto, negociamos escopo e preço numa conversa — sem cardápio fixo neste site.",
+    toolsTitle: "O que eu alcanço",
+    tools: [
+      {
+        name: "TypeScript",
+        detail: "Quando pessoas e outros programas precisam confiar no mesmo código.",
+      },
+      {
+        name: "JavaScript",
+        detail: "Para o browser, protótipos e qualquer coisa que precisa andar rápido.",
+      },
+      {
+        name: "Lua",
+        detail: "Quando o host já fala — games e tooling embutido.",
+      },
+      {
+        name: "CSS & HTML",
+        detail: "Layout, tipo e os estados vazio / errado / esperando que a tela costuma esquecer.",
+      },
+      {
+        name: "GitHub",
+        detail: "Trabalho público em github.com/MindPJL. Discord para quem já conhece o servidor.",
+      },
+    ],
+    ruleCaption: "Uma regra que eu mantenho perto do editor",
+    seeWork: "Ver o trabalho",
+    writeNote: "Escrever uma nota",
   },
   form: {
     name: "Nome",
@@ -665,12 +896,12 @@ const pt: Dictionary = {
     footer: "Um fio de exemplo. Nada daqui é enviado.",
   },
   marquee: [
+    "TYPESCRIPT",
+    "JAVASCRIPT",
+    "LUA",
     "NOMES CLAROS",
-    "PARTES PEQUENAS",
     "ERROS HONESTOS",
-    "ARQUIVOS SIMPLES",
-    "UMA SAÍDA",
-    "VAZIO, ERRADO, ESPERANDO",
+    "QUASE TUDO PRIVADO",
   ],
   practice: [
     {
@@ -711,105 +942,14 @@ const pt: Dictionary = {
       body: "Software funcionando, com os casos de borda escritos — não deixados para depois.",
     },
   ],
-  engagements: [
-    {
-      name: "Leitura",
-      price: "$800",
-      unit: "a partir de",
-      length: "Alguns dias",
-      get: "Uma passagem escrita sobre algo que já existe.",
-      leave: "Nenhum produto novo. Nomes, falhas e a próxima mudança.",
-      featured: false,
-    },
-    {
-      name: "Build",
-      price: "$6,000",
-      unit: "a partir de",
-      length: "Um build focado",
-      get: "Software funcionando, com estados vazio, errado e esperando inclusos.",
-      leave: "Sem plataforma, sem pitch deck, sem cerimônia sobrando.",
-      featured: true,
-    },
-    {
-      name: "Manter",
-      price: "$2,400",
-      unit: "por mês, a partir de",
-      length: "Contínuo",
-      get: "O meio de um sistema, mantido honesto depois da primeira versão.",
-      leave: "Não é uma fila de tickets. Um acordo sobre o que permanece claro.",
-      featured: false,
-    },
-  ],
   projectTitles: {
-    ledger: "Ledger",
-    quiet: "Quiet",
-    trace: "Trace",
-    field: "Field",
+    docinho: "Docinho",
+    board: "Board",
+    fluent: "FluentMeet",
+    hash: "Crypto Hash",
     mark: "Mark",
   },
-  projects: {
-    ledger: {
-      kind: "Ferramenta",
-      summary:
-        "Um livro-caixa pessoal que guarda cada valor em centavos inteiros e cada mudança como uma linha que dá para reler.",
-      problem:
-        "Planilhas escondem o momento em que um número deixou de ser verdade. Uma célula é sobrescrita, uma fórmula desvia, e o total ainda parece confiante.",
-      kept: [
-        "Valores são inteiros em unidades menores. Sem ponto flutuante no caminho que soma dinheiro.",
-        "Lançamentos são só-acréscimo. Uma correção é uma linha nova, não uma edição que apaga a antiga.",
-        "O saldo é uma dobra sobre o log. Nunca uma coluna guardada que pode divergir dos lançamentos.",
-      ],
-      leftOut: [
-        "Conexões bancárias, orçamentos e gráficos. Isso espera até o registro em si ser confiável.",
-        "Várias moedas na primeira versão. Uma unidade, dita em voz alta, basta para provar o modelo.",
-      ],
-    },
-    quiet: {
-      kind: "Interface",
-      summary:
-        "Uma superfície de leitura com uma coluna, um tamanho de tipo que você define uma vez, e progresso que não se anuncia.",
-      problem:
-        "Ler na tela costuma ser uma negociação com chrome. O texto divide a sala com badges, recomendações e uma barra que quer crédito pela sua atenção.",
-      kept: [
-        "Uma medida de cerca de sessenta e seis caracteres, uma escala tipográfica curta e margens que ficam largas quando a janela cresce.",
-        "Posição guardada com o documento, não numa conta. Feche a aba, volte, e a frase está onde você deixou.",
-        "Controles que aparecem quando você pede e saem quando você está lendo.",
-      ],
-      leftOut: [
-        "Destaques que viram feed, recomendações e contas. A página é para o texto à sua frente.",
-      ],
-    },
-    trace: {
-      kind: "Sistemas",
-      summary:
-        "Um visualizador de logs que abre no span que falhou e mantém o resto da mangueira dobrado até você querer ler.",
-      problem:
-        "Quando uma requisição falha, as linhas úteis ficam ao lado de milhares que não são. A maioria dos viewers faz você rolar, ou aprender uma linguagem de consulta antes de ver o erro.",
-      kept: [
-        "Agrupar por requisição. O span que falhou começa expandido, com as poucas linhas anteriores ainda ligadas.",
-        "Filtros que dá para dizer em voz alta: serviço, status, desde. Se um filtro precisa de manual, ele não vai.",
-        "Uma vista de terminal e exportação em texto puro, para colar um trace numa nota sem screenshot.",
-      ],
-      leftOut: [
-        "Uma linguagem de consulta que quer ser SQL, dashboards e alertas. Trace é para o minuto em que algo já quebrou.",
-      ],
-    },
-    field: {
-      kind: "Ferramenta",
-      summary:
-        "Notas que são uma pasta de Markdown. A busca caminha pelos arquivos. O sync é o que você já usa no resto do disco.",
-      problem:
-        "Um app de notas que precisa de conta transformou suas frases no banco de outra pessoa. Sair significa exportar, e o export costuma ser o momento em que você descobre o que não é seu.",
-      kept: [
-        "Um arquivo por nota. O nome é data mais slug, então a pasta se organiza sozinha.",
-        "Uma busca que lê os arquivos. Sem índice que você precisa reconstruir antes da nota que acabou de escrever aparecer.",
-        "Um editor que é textarea e preview. O arquivo no disco é o produto, não um cache dele.",
-      ],
-      leftOut: [
-        "Colaboração, cursores ao vivo e um motor de sync próprio. Se a pasta sincroniza, as notas sincronizam.",
-      ],
-    },
-  },
+  projects: ptProjects,
   aboutLink: "Ler a nota mais longa",
   footerYear: "2026",
 };

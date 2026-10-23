@@ -18,6 +18,9 @@ function isCurrent(href: string, pathname: string, active: string) {
   if (href === "/#work" && pathname.startsWith("/work")) {
     return true;
   }
+  if (href === "/languages" && pathname.startsWith("/languages")) {
+    return true;
+  }
   if (pathname !== "/") {
     return false;
   }
@@ -35,7 +38,7 @@ export function SiteHeader() {
     { href: "/#work", label: dictionary.nav.work },
     { href: "/#results", label: dictionary.nav.results },
     { href: "/#process", label: dictionary.nav.process },
-    { href: "/#pricing", label: dictionary.nav.pricing },
+    { href: "/languages", label: dictionary.nav.languages },
     { href: "/#contact", label: dictionary.nav.contact },
   ];
 
@@ -110,7 +113,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav aria-label="Primary" className="hidden items-center gap-6 text-sm xl:flex">
+          <nav aria-label="Primary" className="hidden items-center gap-5 text-sm xl:flex">
             {nav.map((item) => {
               const current = isCurrent(item.href, pathname, active);
               return (
@@ -131,6 +134,17 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={dictionary.github}
+              className="hidden size-10 items-center justify-center rounded-full border border-white/15 text-muted-foreground transition-colors hover:border-primary hover:text-foreground sm:inline-flex"
+            >
+              <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
+                <path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.97 3.22 9.18 7.69 10.66.56.1.77-.24.77-.54 0-.27-.01-1.16-.02-2.1-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .1.72 2.06 2.72 2.5.84.23 1.32-.02 1.68-.4.1-1.3.39-2.13.71-2.62-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.42.11-2.96 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 2.84-.38c.96 0 1.93.13 2.84.38 2.16-1.45 3.11-1.15 3.11-1.15.61 1.54.23 2.68.11 2.96.72.79 1.16 1.8 1.16 3.02 0 4.32-2.64 5.27-5.15 5.55.4.35.76 1.03.76 2.08 0 1.5-.01 2.71-.01 3.08 0 .3.2.65.78.54A11.02 11.02 0 0 0 23.25 11.76C23.25 5.48 18.27.5 12 .5Z" />
+              </svg>
+            </a>
             {hasChosen ? (
               <div
                 role="group"
@@ -197,6 +211,15 @@ export function SiteHeader() {
                 </Link>
               );
             })}
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setOpen(false)}
+              className="block border-b border-border py-4 font-display text-5xl tracking-tight uppercase text-muted-foreground"
+            >
+              {dictionary.github}
+            </a>
           </nav>
           {hasChosen ? (
             <div className="mt-6 flex gap-2">

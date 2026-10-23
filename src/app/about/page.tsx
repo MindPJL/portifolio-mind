@@ -1,118 +1,101 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { PageIntro } from "@/components/page-intro";
-
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "How Mind likes to work: names you can trust, failures that explain themselves, and software you can leave.",
-};
-
-const tools = [
-  {
-    name: "TypeScript",
-    detail: "When people and other programs both have to trust the same code.",
-  },
-  {
-    name: "The browser",
-    detail: "Layout, type, and the states a screen usually forgets: empty, wrong, and waiting.",
-  },
-  {
-    name: "SQL",
-    detail: "When the truth is a set of rows and the question should be readable.",
-  },
-  {
-    name: "The terminal",
-    detail: "For the work that does not need a window.",
-  },
-  {
-    name: "Plain files",
-    detail: "So the thing can outlive the application that wrote it.",
-  },
-];
+import { Reveal } from "@/components/reveal";
+import { useLanguage } from "@/components/language-provider";
+import { site } from "@/lib/site";
 
 export default function AboutPage() {
+  const { dictionary } = useLanguage();
+  const t = dictionary.aboutPage;
+
   return (
     <Container className="py-20 sm:py-28">
-      <PageIntro index="02" kicker="About" title="How I like to work.">
-        <p>I am Mind. I program.</p>
-      </PageIntro>
+      <Reveal>
+        <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
+          02 / {t.kicker}
+        </p>
+        <h1 className="mt-4 font-display text-[clamp(3rem,7vw,5.5rem)] leading-[0.92] font-bold tracking-tight uppercase">
+          {t.title}
+        </h1>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {site.handle} ·{" "}
+          <a
+            href={site.github}
+            target="_blank"
+            rel="noreferrer"
+            className="underline decoration-foreground/30 underline-offset-4 hover:decoration-signal"
+          >
+            {site.github.replace("https://", "")}
+          </a>
+        </p>
+      </Reveal>
 
       <div className="mt-12 max-w-2xl space-y-6 text-lg leading-relaxed text-pretty">
-        <p>
-          The part of the work I trust is the part you can open in an editor. A
-          function whose name matches what it does. A test that fails for a
-          reason you can say out loud. An interface that does not ask you to
-          keep a legend in your head.
-        </p>
-        <p>
-          I like the middle of a system. Not the pitch, and not the last coat
-          of paint. The place where a request becomes a record. Where an error
-          has to decide whether it is your problem or mine. Where a name chosen
-          on a Tuesday still has to make sense a year later.
-        </p>
-        <p>
-          TypeScript is where I spend most days, because a program often has to
-          be both a thing a person touches and a thing another program can
-          trust. The tool changes. The standard does not: could someone else
-          follow this without me in the room?
-        </p>
-        <p>
-          The projects here are studies. They are the shape of software I want
-          to be known for. When a shipped piece is ready, it replaces a study.
-          The page should get more specific over time, not louder.
-        </p>
+        {[t.p1, t.p2, t.p3, t.p4].map((paragraph, index) => (
+          <Reveal key={paragraph.slice(0, 24)} delay={index * 80}>
+            <p>{paragraph}</p>
+          </Reveal>
+        ))}
       </div>
 
-      <section className="mt-16 max-w-2xl">
-        <h2 className="font-display text-3xl tracking-tight uppercase">What I reach for</h2>
+      <Reveal delay={200} className="mt-16 max-w-2xl">
+        <h2 className="font-display text-3xl tracking-tight uppercase">{t.toolsTitle}</h2>
         <dl className="mt-6 divide-y divide-border border-y border-border">
-          {tools.map((tool) => (
+          {t.tools.map((tool) => (
             <div key={tool.name} className="grid gap-1 py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
               <dt className="font-medium">{tool.name}</dt>
               <dd className="text-muted-foreground">{tool.detail}</dd>
             </div>
           ))}
         </dl>
-      </section>
+      </Reveal>
 
-      <figure className="mt-16 max-w-3xl">
-        <pre
-          tabIndex={0}
-          aria-label="A function that names a change"
-          className="overflow-x-auto rounded-2xl border border-border bg-[#241526] p-5 font-mono text-sm leading-7 text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet sm:p-8"
-        >
-          <code>
-            <span className="text-coral">function</span>
-            {" leaveItReadable(change) {\n  "}
-            <span className="text-coral">return</span>
-            {" {\n    name: change.name,       "}
-            <span className="text-muted-foreground">{"// what it is"}</span>
-            {"\n    reason: change.reason,   "}
-            <span className="text-muted-foreground">{"// why it exists"}</span>
-            {"\n    failure: change.failure, "}
-            <span className="text-muted-foreground">{"// how it breaks"}</span>
-            {"\n  }\n}"}
-          </code>
-        </pre>
-        <figcaption className="mt-3 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-          A rule I keep close to the editor
-        </figcaption>
-      </figure>
+      <Reveal delay={260} className="mt-16 max-w-3xl">
+        <figure>
+          <pre
+            tabIndex={0}
+            aria-label={t.ruleCaption}
+            className="overflow-x-auto rounded-2xl border border-border bg-[#241526] p-5 font-mono text-sm leading-7 text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet sm:p-8"
+          >
+            <code>
+              <span className="text-coral">function</span>
+              {" leaveItReadable(change) {\n  "}
+              <span className="text-coral">return</span>
+              {" {\n    name: change.name,       "}
+              <span className="text-muted-foreground">{"// what it is"}</span>
+              {"\n    reason: change.reason,   "}
+              <span className="text-muted-foreground">{"// why it exists"}</span>
+              {"\n    failure: change.failure, "}
+              <span className="text-muted-foreground">{"// how it breaks"}</span>
+              {"\n  }\n}"}
+            </code>
+          </pre>
+          <figcaption className="mt-3 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+            {t.ruleCaption}
+          </figcaption>
+        </figure>
+      </Reveal>
 
       <p className="mt-12 flex flex-col gap-3 font-mono text-xs tracking-[0.16em] uppercase sm:flex-row sm:gap-8">
         <Link
           href="/#work"
           className="underline decoration-foreground/30 underline-offset-[0.25em] hover:decoration-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
         >
-          See the studies
+          {t.seeWork}
+        </Link>
+        <Link
+          href="/languages"
+          className="underline decoration-foreground/30 underline-offset-[0.25em] hover:decoration-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
+        >
+          {dictionary.nav.languages}
         </Link>
         <Link
           href="/#contact"
           className="underline decoration-foreground/30 underline-offset-[0.25em] hover:decoration-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
         >
-          Write a note
+          {t.writeNote}
         </Link>
       </p>
     </Container>
