@@ -5,6 +5,8 @@ import { Container } from "@/components/container";
 import { ProjectFigure } from "@/components/project-figure";
 import { getNextProject, getProject, projects } from "@/lib/projects";
 
+export const instant = false;
+
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }

@@ -21,7 +21,27 @@ const emptyDraft: NoteDraft = {
 
 type Delivery = "copied" | "email" | "manual";
 
+function copyWithCommand(text: string) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "fixed";
+  area.style.top = "0";
+  area.style.left = "0";
+  area.style.opacity = "0";
+  document.body.appendChild(area);
+  area.focus();
+  area.select();
+  const copied = document.execCommand("copy");
+  area.remove();
+  return copied;
+}
+
 async function copyText(text: string) {
+  if (copyWithCommand(text)) {
+    return true;
+  }
+
   try {
     await navigator.clipboard.writeText(text);
     return true;
@@ -91,7 +111,7 @@ export function ContactForm({ email }: { email: string }) {
         <p className="mt-3 text-base leading-relaxed text-pretty text-muted-foreground">
           {message}
         </p>
-        <pre className="mt-6 overflow-x-auto border border-border bg-muted p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap">
+        <pre className="mt-6 overflow-x-auto border border-border bg-muted p-4 font-mono text-sm leading-relaxed break-words whitespace-pre-wrap">
           {note.text}
         </pre>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
