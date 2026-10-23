@@ -1,6 +1,6 @@
 # Mind
 
-A portfolio site for Mind, a programmer. Dark, high-energy single page — dissolve mark, studies, process chat, pricing, and a contact note — inspired by modern creative portfolios like PerusC4.
+Portfolio for [MindPJL](https://github.com/MindPJL) — dark, high-energy single page with dissolve mark, public projects, languages orbit, negotiation (no fixed prices), and a contact note.
 
 ## Run it
 
@@ -15,15 +15,19 @@ Open [http://localhost:43123](http://localhost:43123).
 
 On first visit the site asks for English or Portuguese. The choice is saved in `localStorage` under `mind-locale`. Switch anytime with the EN / PT control in the header.
 
-Copy lives in `src/lib/i18n/dictionary.ts` (and `src/lib/i18n/conversation.ts` for the sample chat).
+## What’s here
+
+- `/` — portfolio sequence (work, process, negotiate, contact)
+- `/languages` — interactive principal languages (TypeScript, JavaScript, Lua, CSS, HTML)
+- `/about` — longer note
+- `/work/[slug]` — public project notes linked to GitHub
 
 ## Make it yours
 
-- `src/lib/site.ts` — name, role, and the short description used in the page title.
-- `src/lib/site.ts` → `contactEmail` — set your address and the contact form opens the visitor’s mail app. Leave it empty and the form copies the note to the clipboard instead.
-- `src/lib/projects.ts` — the studies (structure and stacks; prose is in the dictionary).
-- `src/lib/i18n/dictionary.ts` — all EN / PT strings, including practice, process, and pricing.
-- `src/app/about/page.tsx` — the longer note.
+- `src/lib/site.ts` — name, GitHub, Discord, bio, `contactEmail`
+- `src/lib/projects.ts` — public projects (+ optional `repo` URLs)
+- `src/lib/languages.ts` — principal languages for the orbit page
+- `src/lib/i18n/dictionary.ts` — all EN / PT copy
 
 ## Stack
 
