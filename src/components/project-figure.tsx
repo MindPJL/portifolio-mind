@@ -187,7 +187,7 @@ export function ProjectFigure({
   return (
     <div
       className={cn(
-        "aspect-[2/1] w-full overflow-hidden border border-border bg-ink text-background",
+        "aspect-[2/1] w-full overflow-hidden border border-border bg-[#241526] text-foreground",
         className,
       )}
       aria-hidden="true"

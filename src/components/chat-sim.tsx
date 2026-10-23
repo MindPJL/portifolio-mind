@@ -9,8 +9,8 @@ function Avatar({ from }: { from: ChatLine["from"] }) {
     <span
       aria-hidden="true"
       className={cn(
-        "grid size-8 shrink-0 place-items-center rounded-full font-mono text-xs",
-        from === "mind" ? "bg-ink text-background" : "bg-signal text-background",
+        "grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold",
+        from === "mind" ? "bg-primary text-primary-foreground" : "bg-violet text-background",
       )}
     >
       {from === "mind" ? "M" : "Y"}
@@ -22,7 +22,7 @@ function TypingBubble() {
   return (
     <div className="flex items-end gap-3">
       <Avatar from="mind" />
-      <div className="border border-border bg-card px-4 py-3">
+      <div className="rounded-2xl border border-border bg-card px-4 py-3">
         <span className="sr-only">Mind is typing</span>
         <span aria-hidden="true" className="flex items-center gap-1.5">
           <span className="typing-dot size-1.5 rounded-full bg-foreground" />
@@ -64,11 +64,10 @@ export function ChatSim() {
         if (next < conversation.length) {
           timer = window.setTimeout(() => reveal(next), 700);
         }
-      }, 1000);
+      }, 900);
     };
 
     timer = window.setTimeout(() => reveal(0), 0);
-
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
@@ -86,12 +85,13 @@ export function ChatSim() {
   const visible = conversation.slice(0, shown);
 
   return (
-    <div className="flex h-full min-h-[28rem] flex-col border border-border bg-card">
+    <div className="flex h-full min-h-[32rem] flex-col overflow-hidden rounded-2xl border border-border bg-[#19111d]">
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
-        <p className="font-mono text-[0.7rem] tracking-[0.16em] uppercase">
-          Notes with Mind
-        </p>
-        <p className="font-mono text-[0.7rem] tracking-[0.16em] text-muted-foreground uppercase">
+        <div>
+          <p className="text-sm font-semibold">Mind</p>
+          <p className="text-xs text-muted-foreground">@mind · DM</p>
+        </div>
+        <p className="text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
           Live sample
         </p>
       </div>
@@ -104,21 +104,24 @@ export function ChatSim() {
             <Avatar from={line.from} />
             <div
               className={cn(
-                "max-w-[80%] px-4 py-3 text-sm leading-relaxed",
+                "max-w-[82%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
                 line.from === "mind"
-                  ? "bg-ink text-background"
-                  : "border border-border bg-background",
+                  ? "bg-[#2a1628] text-foreground"
+                  : "border border-border bg-card",
               )}
             >
+              {line.time ? (
+                <p className="mb-1 text-[0.65rem] tracking-[0.12em] text-muted-foreground uppercase">
+                  {line.time}
+                </p>
+              ) : null}
               <p>{line.text}</p>
               {line.attachment ? (
-                <div className="mt-3 border border-background/30 bg-background/10 p-3">
-                  <p className="font-mono text-[0.7rem] tracking-[0.14em] uppercase">
-                    {line.attachment.name}
+                <div className="mt-3 rounded-xl border border-white/15 bg-black/20 p-3">
+                  <p className="text-[0.7rem] tracking-[0.14em] uppercase">
+                    {line.attachment.name} ↗
                   </p>
-                  <p className="mt-1 text-sm leading-relaxed text-background/80">
-                    {line.attachment.detail}
-                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">{line.attachment.detail}</p>
                 </div>
               ) : null}
             </div>
@@ -126,7 +129,7 @@ export function ChatSim() {
         ))}
         {typing ? <TypingBubble /> : null}
       </div>
-      <div className="border-t border-border px-4 py-3 font-mono text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
+      <div className="border-t border-border px-4 py-3 text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
         A sample thread. Nothing here is sent.
       </div>
     </div>

@@ -81,7 +81,7 @@ function StudyRow({ project }: { project: ProjectSummary }) {
           {project.kind}
         </span>
       </div>
-      <h2 className="mt-3 flex items-baseline justify-between gap-4 font-serif text-3xl tracking-tight sm:text-4xl">
+      <h2 className="mt-3 flex items-baseline justify-between gap-4 font-display text-3xl tracking-tight uppercase sm:text-4xl">
         <span>{project.title}</span>
         <span
           aria-hidden="true"

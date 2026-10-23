@@ -5,16 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowLink } from "@/components/arrow-link";
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/container";
 import { contactHref, nav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-const linkFocus =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal";
-
 function sectionId(href: string) {
-  const hash = href.split("#")[1];
-  return hash ?? "";
+  return href.split("#")[1] ?? "";
 }
 
 function isCurrent(href: string, pathname: string, active: string) {
@@ -31,7 +26,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [seenPath, setSeenPath] = useState(pathname);
-  const [active, setActive] = useState("hero");
+  const [active, setActive] = useState("top");
 
   if (seenPath !== pathname) {
     setSeenPath(pathname);
@@ -82,21 +77,22 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-border bg-background">
-        <Container className="flex h-16 items-center justify-between gap-4">
+      <header className="fixed top-3 right-[4%] left-[4%] z-40 mx-auto max-w-[1400px] rounded-[15px] border border-white/20 bg-[#160f19cc] px-4 py-2.5 shadow-[0_8px_30px_#0001] backdrop-blur-[18px] sm:top-[18px] sm:px-[18px]">
+        <div className="flex items-center justify-between gap-3">
           <Link
-            href="/#hero"
-            aria-current={pathname === "/" && active === "hero" ? "page" : undefined}
-            className={cn(
-              "inline-flex shrink-0 items-center gap-2.5 font-serif text-[1.7rem] leading-none tracking-tight",
-              linkFocus,
-            )}
+            href="/#top"
+            className="inline-flex shrink-0 items-center gap-2 text-[19px] font-extrabold tracking-[-0.07em] sm:text-[23px]"
           >
-            <span aria-hidden="true" className="size-2 bg-signal" />
-            {site.name}
+            <span aria-hidden="true" className="grid size-7 place-items-center rounded-md bg-primary font-display text-sm text-primary-foreground sm:size-8">
+              M
+            </span>
+            <span>
+              {site.name.toUpperCase()}
+              <span className="text-primary">.</span>
+            </span>
           </Link>
 
-          <nav aria-label="Primary" className="hidden items-center justify-center gap-5 lg:flex">
+          <nav aria-label="Primary" className="hidden items-center gap-7 text-sm lg:flex">
             {nav.map((item) => {
               const current = isCurrent(item.href, pathname, active);
               return (
@@ -105,11 +101,11 @@ export function SiteHeader() {
                   href={item.href}
                   aria-current={current ? "page" : undefined}
                   className={cn(
-                    "border-b pb-0.5 font-mono text-[0.68rem] tracking-[0.14em] uppercase",
-                    linkFocus,
-                    current
-                      ? "border-signal text-foreground"
-                      : "border-transparent text-muted-foreground hover:text-foreground",
+                    "relative pb-1 text-[#cdbfd4] transition-colors hover:text-foreground",
+                    current && "text-foreground",
+                    "after:absolute after:right-full after:bottom-[-4px] after:left-0 after:h-0.5 after:bg-primary after:transition-[right] after:duration-300",
+                    (current || undefined) && "after:right-0",
+                    "hover:after:right-0",
                   )}
                 >
                   {item.label}
@@ -119,14 +115,16 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
-            <ArrowLink href={contactHref} className="h-10 px-3">
-              <span className="sm:hidden">Note</span>
-              <span className="hidden sm:inline">Write a note</span>
+            <ArrowLink
+              href={contactHref}
+              className="nav-cta hidden min-h-11 px-[21px] text-sm sm:inline-flex"
+            >
+              Let’s talk
             </ArrowLink>
             <Button
               type="button"
               variant="outline"
-              className="h-10 cursor-pointer px-3 lg:hidden"
+              className="h-10 cursor-pointer border-white/20 bg-transparent px-3 lg:hidden"
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpen((value) => !value)}
@@ -134,39 +132,40 @@ export function SiteHeader() {
               {open ? "Close" : "Menu"}
             </Button>
           </div>
-        </Container>
+        </div>
       </header>
 
       {open ? (
         <div
           id="mobile-nav"
-          className="fixed inset-x-0 top-16 bottom-0 z-30 overflow-y-auto border-t border-border bg-background lg:hidden"
+          className="fixed inset-x-0 top-[76px] bottom-0 z-30 overflow-y-auto bg-background/98 px-[4%] py-6 backdrop-blur-xl lg:hidden"
         >
-          <Container className="flex flex-col gap-6 py-6">
-            <nav aria-label="Mobile" className="flex flex-col">
-              {nav.map((item) => {
-                const current = isCurrent(item.href, pathname, active);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    aria-current={current ? "page" : undefined}
-                    onClick={() => setOpen(false)}
-                    className={cn(
-                      "block border-b border-border py-4 font-serif text-4xl tracking-tight",
-                      linkFocus,
-                      current ? "text-foreground" : "text-muted-foreground",
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
-            <ArrowLink href={contactHref} className="w-full" onClick={() => setOpen(false)}>
-              Write a note
-            </ArrowLink>
-          </Container>
+          <nav aria-label="Mobile" className="flex flex-col">
+            {nav.map((item) => {
+              const current = isCurrent(item.href, pathname, active);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={current ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "border-b border-border py-4 font-display text-5xl tracking-tight uppercase",
+                    current ? "text-foreground" : "text-muted-foreground",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <ArrowLink
+            href={contactHref}
+            className="mt-6 w-full"
+            onClick={() => setOpen(false)}
+          >
+            Let’s talk
+          </ArrowLink>
         </div>
       ) : null}
     </>

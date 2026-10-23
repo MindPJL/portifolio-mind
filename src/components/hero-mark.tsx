@@ -33,12 +33,12 @@ const strokes = [
 
 function buildParticles(width: number, height: number) {
   const particles: Particle[] = [];
-  const samples = 26;
+  const samples = 28;
 
   strokes.forEach((stroke, strokeIndex) => {
     const [start, end] = stroke;
     for (let copy = 0; copy < 2; copy += 1) {
-      const offset = copy === 0 ? 0 : 0.028;
+      const offset = copy === 0 ? 0 : 0.03;
       for (let step = 0; step < samples; step += 1) {
         const t = step / (samples - 1);
         const nx = start[0] + (end[0] - start[0]) * t + offset;
@@ -52,7 +52,7 @@ function buildParticles(width: number, height: number) {
           y,
           stroke: strokeIndex * 2 + copy,
           index: step,
-          signal: step % 7 === 0,
+          signal: step % 6 === 0,
         });
       }
     }
@@ -61,7 +61,7 @@ function buildParticles(width: number, height: number) {
   return particles;
 }
 
-export function HeroMark() {
+export function HeroMark({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export function HeroMark() {
     let frame = 0;
     let running = true;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const radius = 120;
+    const radius = 130;
 
     const layout = () => {
       const rect = canvas.getBoundingClientRect();
@@ -92,9 +92,9 @@ export function HeroMark() {
 
     const draw = () => {
       const rect = canvas.getBoundingClientRect();
-      const root = getComputedStyle(document.documentElement);
-      const ink = root.getPropertyValue("--foreground").trim() || "#241f1a";
-      const signal = root.getPropertyValue("--signal").trim() || "#9a3412";
+      const ink = "#fff4ec";
+      const signal = "#ff385b";
+      const coral = "#ff976b";
       context.clearRect(0, 0, rect.width, rect.height);
 
       for (const particle of particles) {
@@ -105,11 +105,11 @@ export function HeroMark() {
           const distance = Math.hypot(dx, dy) || 1;
           if (distance < radius) {
             influence = (radius - distance) / radius;
-            const push = influence * influence * 64;
+            const push = influence * influence * 70;
             particle.x += (dx / distance) * push;
             particle.y += (dy / distance) * push;
-            particle.x += (Math.random() - 0.5) * influence * 28;
-            particle.y += (Math.random() - 0.5) * influence * 28;
+            particle.x += (Math.random() - 0.5) * influence * 32;
+            particle.y += (Math.random() - 0.5) * influence * 32;
           }
         }
         particle.x += (particle.homeX - particle.x) * 0.08;
@@ -118,12 +118,12 @@ export function HeroMark() {
         const next = particles.find(
           (item) => item.stroke === particle.stroke && item.index === particle.index + 1,
         );
-        if (next && influence < 0.4) {
+        if (next && influence < 0.35) {
           const gap = Math.hypot(next.x - particle.x, next.y - particle.y);
-          if (gap < 20) {
-            context.globalAlpha = (1 - influence) * 0.45;
+          if (gap < 22) {
+            context.globalAlpha = (1 - influence) * 0.55;
             context.strokeStyle = particle.signal ? signal : ink;
-            context.lineWidth = 1.25;
+            context.lineWidth = 1.4;
             context.beginPath();
             context.moveTo(particle.x, particle.y);
             context.lineTo(next.x, next.y);
@@ -131,10 +131,10 @@ export function HeroMark() {
           }
         }
 
-        context.globalAlpha = 0.2 + (1 - influence) * 0.8;
-        context.fillStyle = particle.signal ? signal : ink;
+        context.globalAlpha = 0.35 + (1 - influence) * 0.65;
+        context.fillStyle = particle.signal ? (influence > 0.2 ? coral : signal) : ink;
         context.beginPath();
-        context.arc(particle.x, particle.y, 1.7 * (1 - influence * 0.55), 0, Math.PI * 2);
+        context.arc(particle.x, particle.y, 2 * (1 - influence * 0.4), 0, Math.PI * 2);
         context.fill();
       }
       context.globalAlpha = 1;
@@ -188,7 +188,7 @@ export function HeroMark() {
   return (
     <canvas
       ref={canvasRef}
-      className="h-[300px] w-full touch-none sm:h-[420px]"
+      className={className ?? "h-[280px] w-full touch-none sm:h-[380px]"}
       aria-hidden="true"
     />
   );

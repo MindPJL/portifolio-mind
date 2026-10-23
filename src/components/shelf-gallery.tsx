@@ -71,7 +71,7 @@ export function ShelfGallery({ plates }: { plates: Plate[] }) {
           <button
             key={item.slug}
             type="button"
-            className="bento-card border border-border bg-card text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
+            className="bento-card overflow-hidden rounded-2xl border border-border bg-card text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet"
             onClick={() => {
               setZoom("fit");
               setOpenIndex(index);
@@ -79,7 +79,7 @@ export function ShelfGallery({ plates }: { plates: Plate[] }) {
           >
             <ProjectFigure slug={item.slug} className="border-0 border-b" />
             <span className="flex items-baseline justify-between gap-3 p-4">
-              <span className="font-serif text-2xl tracking-tight">{item.title}</span>
+              <span className="font-display text-3xl tracking-tight uppercase">{item.title}</span>
               <span className="font-mono text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
                 {pad(index + 1)} / {pad(plates.length)}
               </span>

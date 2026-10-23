@@ -40,22 +40,22 @@ export default async function ProjectPage({
   const next = getNextProject(project.slug);
 
   return (
-    <Container className="py-14 sm:py-20">
+    <Container className="py-20 sm:py-28">
       <Link
-        href="/work"
-        className="font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase underline-offset-4 hover:text-foreground hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
+        href="/#work"
+        className="text-xs tracking-[0.16em] text-muted-foreground uppercase underline-offset-4 hover:text-foreground hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet"
       >
         ← All work
       </Link>
 
-      <p className="mt-10 font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase">
+      <p className="mt-10 text-xs tracking-[0.16em] text-muted-foreground uppercase">
         <span className="text-signal">Study</span>
         <span className="px-2 text-border" aria-hidden="true">
           /
         </span>
         {project.kind}
       </p>
-      <h1 className="mt-4 font-serif text-5xl tracking-tight text-balance sm:text-7xl">
+      <h1 className="mt-4 font-display text-5xl tracking-tight uppercase text-balance sm:text-7xl">
         {project.title}
       </h1>
       <p className="mt-6 max-w-2xl text-xl leading-relaxed text-pretty text-muted-foreground">
@@ -79,11 +79,11 @@ export default async function ProjectPage({
 
       <div className="mt-14 grid max-w-2xl gap-12">
         <section>
-          <h2 className="font-serif text-3xl tracking-tight">The problem</h2>
+          <h2 className="font-display text-3xl tracking-tight uppercase">The problem</h2>
           <p className="mt-4 text-lg leading-relaxed text-pretty">{project.problem}</p>
         </section>
         <section>
-          <h2 className="font-serif text-3xl tracking-tight">What I kept</h2>
+          <h2 className="font-display text-3xl tracking-tight uppercase">What I kept</h2>
           <ul className="mt-4 flex flex-col gap-4">
             {project.kept.map((item) => (
               <li key={item} className="border-l border-signal pl-4 text-base leading-relaxed">
@@ -93,7 +93,7 @@ export default async function ProjectPage({
           </ul>
         </section>
         <section>
-          <h2 className="font-serif text-3xl tracking-tight">What I left out</h2>
+          <h2 className="font-display text-3xl tracking-tight uppercase">What I left out</h2>
           <ul className="mt-4 flex flex-col gap-4">
             {project.leftOut.map((item) => (
               <li
@@ -116,7 +116,7 @@ export default async function ProjectPage({
             <span className="font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase">
               Next study
             </span>
-            <span className="mt-2 block font-serif text-4xl tracking-tight sm:text-5xl">
+            <span className="mt-2 block font-display text-4xl tracking-tight uppercase sm:text-5xl">
               {next.title}
             </span>
           </span>

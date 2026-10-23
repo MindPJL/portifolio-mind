@@ -1,9 +1,9 @@
 export const site = {
   name: "Mind",
   role: "Programmer",
-  title: "Mind — Programmer",
+  title: "Mind — Make the first impression count.",
   description:
-    "Mind is a programmer. A front door for studies in interfaces, systems, and tools, and a place to write a note.",
+    "Mind is a programmer. Interfaces, systems, and tools that still make sense when you open them later.",
 } as const;
 
 /**
@@ -14,10 +14,10 @@ export const contactEmail: string = "";
 
 export const nav = [
   { href: "/#work", label: "Work" },
-  { href: "/#practice", label: "Practice" },
-  { href: "/#notes", label: "Notes" },
-  { href: "/#shelf", label: "Shelf" },
-  { href: "/#engage", label: "Engage" },
+  { href: "/#results", label: "Results" },
+  { href: "/#process", label: "Process" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/#contact", label: "Contact" },
 ] as const;
 
 export const contactHref = "/#contact";

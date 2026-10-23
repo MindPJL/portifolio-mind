@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function WorkPage() {
   return (
-    <Container className="py-14 sm:py-20">
+    <Container className="py-20 sm:py-28">
       <PageIntro index="01" kicker="Work" title="Studies, not a résumé.">
         <p>
           Four pieces in the shape of software I want to be known for. They are

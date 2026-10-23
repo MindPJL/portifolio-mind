@@ -34,7 +34,7 @@ const tools = [
 
 export default function AboutPage() {
   return (
-    <Container className="py-14 sm:py-20">
+    <Container className="py-20 sm:py-28">
       <PageIntro index="02" kicker="About" title="How I like to work.">
         <p>I am Mind. I program.</p>
       </PageIntro>
@@ -66,7 +66,7 @@ export default function AboutPage() {
       </div>
 
       <section className="mt-16 max-w-2xl">
-        <h2 className="font-serif text-3xl tracking-tight">What I reach for</h2>
+        <h2 className="font-display text-3xl tracking-tight uppercase">What I reach for</h2>
         <dl className="mt-6 divide-y divide-border border-y border-border">
           {tools.map((tool) => (
             <div key={tool.name} className="grid gap-1 py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
@@ -81,18 +81,18 @@ export default function AboutPage() {
         <pre
           tabIndex={0}
           aria-label="A function that names a change"
-          className="overflow-x-auto bg-ink p-5 font-mono text-sm leading-7 text-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal sm:p-8"
+          className="overflow-x-auto rounded-2xl border border-border bg-[#241526] p-5 font-mono text-sm leading-7 text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet sm:p-8"
         >
           <code>
-            <span className="text-signal-soft">function</span>
+            <span className="text-coral">function</span>
             {" leaveItReadable(change) {\n  "}
-            <span className="text-signal-soft">return</span>
+            <span className="text-coral">return</span>
             {" {\n    name: change.name,       "}
-            <span className="text-background/50">{"// what it is"}</span>
+            <span className="text-muted-foreground">{"// what it is"}</span>
             {"\n    reason: change.reason,   "}
-            <span className="text-background/50">{"// why it exists"}</span>
+            <span className="text-muted-foreground">{"// why it exists"}</span>
             {"\n    failure: change.failure, "}
-            <span className="text-background/50">{"// how it breaks"}</span>
+            <span className="text-muted-foreground">{"// how it breaks"}</span>
             {"\n  }\n}"}
           </code>
         </pre>
@@ -103,13 +103,13 @@ export default function AboutPage() {
 
       <p className="mt-12 flex flex-col gap-3 font-mono text-xs tracking-[0.16em] uppercase sm:flex-row sm:gap-8">
         <Link
-          href="/work"
+          href="/#work"
           className="underline decoration-foreground/30 underline-offset-[0.25em] hover:decoration-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
         >
           See the studies
         </Link>
         <Link
-          href="/contact"
+          href="/#contact"
           className="underline decoration-foreground/30 underline-offset-[0.25em] hover:decoration-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
         >
           Write a note
