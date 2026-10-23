@@ -3,25 +3,35 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ArrowLink } from "@/components/arrow-link";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/container";
-import { nav, site } from "@/lib/site";
+import { contactHref, nav, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const linkFocus =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal";
 
-function isCurrent(href: string, pathname: string) {
-  if (href === "/work") {
-    return pathname === "/work" || pathname.startsWith("/work/");
+function sectionId(href: string) {
+  const hash = href.split("#")[1];
+  return hash ?? "";
+}
+
+function isCurrent(href: string, pathname: string, active: string) {
+  if (href === "/#work" && pathname.startsWith("/work")) {
+    return true;
   }
-  return pathname === href;
+  if (pathname !== "/") {
+    return false;
+  }
+  return sectionId(href) === active;
 }
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [seenPath, setSeenPath] = useState(pathname);
+  const [active, setActive] = useState("hero");
 
   if (seenPath !== pathname) {
     setSeenPath(pathname);
@@ -32,16 +42,13 @@ export function SiteHeader() {
     if (!open) {
       return;
     }
-
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setOpen(false);
       }
     }
-
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previous;
@@ -49,15 +56,39 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (pathname !== "/") {
+      return;
+    }
+    const nodes = [...document.querySelectorAll<HTMLElement>("[data-section]")];
+    if (nodes.length === 0) {
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const id = visible[0]?.target.id;
+        if (id) {
+          setActive(id);
+        }
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.25, 0.5] },
+    );
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, [pathname]);
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-background">
         <Container className="flex h-16 items-center justify-between gap-4">
           <Link
-            href="/"
-            aria-current={pathname === "/" ? "page" : undefined}
+            href="/#hero"
+            aria-current={pathname === "/" && active === "hero" ? "page" : undefined}
             className={cn(
-              "inline-flex items-center gap-2.5 font-serif text-[1.7rem] leading-none tracking-tight",
+              "inline-flex shrink-0 items-center gap-2.5 font-serif text-[1.7rem] leading-none tracking-tight",
               linkFocus,
             )}
           >
@@ -65,16 +96,16 @@ export function SiteHeader() {
             {site.name}
           </Link>
 
-          <nav aria-label="Primary" className="hidden items-center gap-7 sm:flex">
+          <nav aria-label="Primary" className="hidden items-center justify-center gap-5 lg:flex">
             {nav.map((item) => {
-              const current = isCurrent(item.href, pathname);
+              const current = isCurrent(item.href, pathname, active);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   aria-current={current ? "page" : undefined}
                   className={cn(
-                    "border-b pb-0.5 font-mono text-xs tracking-[0.16em] uppercase",
+                    "border-b pb-0.5 font-mono text-[0.68rem] tracking-[0.14em] uppercase",
                     linkFocus,
                     current
                       ? "border-signal text-foreground"
@@ -87,28 +118,34 @@ export function SiteHeader() {
             })}
           </nav>
 
-          <Button
-            type="button"
-            variant="outline"
-            className="h-10 cursor-pointer px-3 sm:hidden"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            onClick={() => setOpen((value) => !value)}
-          >
-            {open ? "Close" : "Menu"}
-          </Button>
+          <div className="flex shrink-0 items-center gap-2">
+            <ArrowLink href={contactHref} className="h-10 px-3">
+              <span className="sm:hidden">Note</span>
+              <span className="hidden sm:inline">Write a note</span>
+            </ArrowLink>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 cursor-pointer px-3 lg:hidden"
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+              onClick={() => setOpen((value) => !value)}
+            >
+              {open ? "Close" : "Menu"}
+            </Button>
+          </div>
         </Container>
       </header>
 
       {open ? (
         <div
           id="mobile-nav"
-          className="fixed inset-x-0 top-16 bottom-0 z-30 overflow-y-auto border-t border-border bg-background sm:hidden"
+          className="fixed inset-x-0 top-16 bottom-0 z-30 overflow-y-auto border-t border-border bg-background lg:hidden"
         >
-          <Container className="flex flex-col py-4">
-            <nav aria-label="Mobile">
+          <Container className="flex flex-col gap-6 py-6">
+            <nav aria-label="Mobile" className="flex flex-col">
               {nav.map((item) => {
-                const current = isCurrent(item.href, pathname);
+                const current = isCurrent(item.href, pathname, active);
                 return (
                   <Link
                     key={item.href}
@@ -126,6 +163,9 @@ export function SiteHeader() {
                 );
               })}
             </nav>
+            <ArrowLink href={contactHref} className="w-full" onClick={() => setOpen(false)}>
+              Write a note
+            </ArrowLink>
           </Container>
         </div>
       ) : null}

@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 function LedgerMark() {
   const rows = [
     { y: 78, label: "001", amount: "1,200", hot: false },
@@ -146,19 +148,48 @@ function FieldMark() {
   );
 }
 
+function MarkPlate() {
+  return (
+    <svg viewBox="0 0 800 400" className="h-full w-full" fill="none">
+      <path
+        d="M170 310 V96 L400 250 L630 96 V310"
+        stroke="currentColor"
+        strokeWidth="16"
+        strokeLinejoin="miter"
+      />
+      <path
+        d="M170 310 V96 L400 250 L630 96 V310"
+        stroke="var(--signal)"
+        strokeWidth="3"
+        strokeLinejoin="miter"
+      />
+    </svg>
+  );
+}
+
 const marks = {
   ledger: LedgerMark,
   quiet: QuietMark,
   trace: TraceMark,
   field: FieldMark,
+  mark: MarkPlate,
 };
 
-export function ProjectFigure({ slug }: { slug: string }) {
+export function ProjectFigure({
+  slug,
+  className,
+}: {
+  slug: string;
+  className?: string;
+}) {
   const Mark = marks[slug as keyof typeof marks] ?? LedgerMark;
 
   return (
     <div
-      className="aspect-[2/1] w-full overflow-hidden border border-border bg-ink text-background"
+      className={cn(
+        "aspect-[2/1] w-full overflow-hidden border border-border bg-ink text-background",
+        className,
+      )}
       aria-hidden="true"
     >
       <Mark />

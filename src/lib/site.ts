@@ -13,7 +13,11 @@ export const site = {
 export const contactEmail: string = "";
 
 export const nav = [
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/#work", label: "Work" },
+  { href: "/#practice", label: "Practice" },
+  { href: "/#notes", label: "Notes" },
+  { href: "/#shelf", label: "Shelf" },
+  { href: "/#engage", label: "Engage" },
 ] as const;
+
+export const contactHref = "/#contact";
