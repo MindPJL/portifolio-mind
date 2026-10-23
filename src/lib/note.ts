@@ -6,28 +6,40 @@ export type NoteDraft = {
 
 export type NoteErrors = Partial<Record<keyof NoteDraft, string>>;
 
+export type NoteMessages = {
+  nameRequired: string;
+  emailRequired: string;
+  emailInvalid: string;
+  messageRequired: string;
+  messageShort: string;
+  subjectPrefix: string;
+};
+
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function validateNote(draft: NoteDraft): NoteErrors {
+export function validateNote(
+  draft: NoteDraft,
+  messages: NoteMessages,
+): NoteErrors {
   const errors: NoteErrors = {};
   const name = draft.name.trim();
   const email = draft.email.trim();
   const message = draft.message.trim();
 
   if (name.length < 2) {
-    errors.name = "Add your name so I know who is writing.";
+    errors.name = messages.nameRequired;
   }
 
   if (!email) {
-    errors.email = "Add an email so a reply has somewhere to go.";
+    errors.email = messages.emailRequired;
   } else if (!EMAIL.test(email)) {
-    errors.email = "That email does not look complete.";
+    errors.email = messages.emailInvalid;
   }
 
   if (!message) {
-    errors.message = "Say a bit about why you are writing.";
+    errors.message = messages.messageRequired;
   } else if (message.length < 12) {
-    errors.message = "A few more words will help me answer.";
+    errors.message = messages.messageShort;
   }
 
   return errors;
@@ -37,11 +49,11 @@ export function noteHasErrors(errors: NoteErrors) {
   return Object.keys(errors).length > 0;
 }
 
-export function buildNote(draft: NoteDraft) {
+export function buildNote(draft: NoteDraft, subjectPrefix: string) {
   const name = draft.name.trim();
   const email = draft.email.trim();
   const message = draft.message.trim();
-  const subject = `Note for Mind, from ${name}`;
+  const subject = `${subjectPrefix} ${name}`;
   const body = `From: ${name} <${email}>\n\n${message}`;
 
   return {

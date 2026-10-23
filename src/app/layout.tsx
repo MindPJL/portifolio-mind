@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, DM_Sans } from "next/font/google";
 import { CursorLight } from "@/components/cursor-light";
+import { LanguageGate } from "@/components/language-gate";
+import { LanguageProvider } from "@/components/language-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { site } from "@/lib/site";
 import "./globals.css";
+import "lenis/dist/lenis.css";
 
 const dmSans = DM_Sans({
   variable: "--font-dm",
@@ -39,18 +43,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${dmSans.variable} ${barlow.variable} h-full antialiased dark`}
     >
       <body className="flex min-h-full flex-col">
-        <a
-          href="#content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
-        >
-          Skip to content
-        </a>
-        <CursorLight />
-        <SiteHeader />
-        <main id="content" tabIndex={-1} className="flex-1 outline-none">
-          {children}
-        </main>
-        <SiteFooter />
+        <LanguageProvider>
+          <a
+            href="#content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
+          >
+            Skip to content
+          </a>
+          <LanguageGate />
+          <SmoothScroll />
+          <CursorLight />
+          <SiteHeader />
+          <main id="content" tabIndex={-1} className="flex-1 outline-none">
+            {children}
+          </main>
+          <SiteFooter />
+        </LanguageProvider>
       </body>
     </html>
   );

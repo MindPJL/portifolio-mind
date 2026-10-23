@@ -1,13 +1,11 @@
-const items = [
-  "CLEAR NAMES",
-  "SMALL PARTS",
-  "HONEST ERRORS",
-  "PLAIN FILES",
-  "A WAY OUT",
-  "EMPTY, WRONG, WAITING",
-];
+"use client";
+
+import { useLanguage } from "@/components/language-provider";
 
 export function Marquee() {
+  const { dictionary } = useLanguage();
+  const items = dictionary.marquee;
+
   return (
     <div className="overflow-hidden bg-gradient-to-r from-[#fa3457] via-[#f3675d] to-[#b683ed] py-4 text-[#240e24] [transform:rotate(-1.4deg)_scale(1.02)]">
       <div className="marquee-track flex w-max" aria-hidden="true">

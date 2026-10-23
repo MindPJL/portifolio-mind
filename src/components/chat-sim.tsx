@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { conversation, type ChatLine } from "@/lib/conversation";
+import { useLanguage } from "@/components/language-provider";
+import { getConversation } from "@/lib/i18n/conversation";
+import type { ChatLine } from "@/lib/conversation";
 import { cn } from "@/lib/utils";
 
 function Avatar({ from }: { from: ChatLine["from"] }) {
@@ -10,7 +12,7 @@ function Avatar({ from }: { from: ChatLine["from"] }) {
       aria-hidden="true"
       className={cn(
         "grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold",
-        from === "mind" ? "bg-primary text-primary-foreground" : "bg-violet text-background",
+        from === "mind" ? "bg-[#ff385b] text-[#fff4ec]" : "bg-violet text-background",
       )}
     >
       {from === "mind" ? "M" : "Y"}
@@ -18,12 +20,12 @@ function Avatar({ from }: { from: ChatLine["from"] }) {
   );
 }
 
-function TypingBubble() {
+function TypingBubble({ label }: { label: string }) {
   return (
     <div className="flex items-end gap-3">
       <Avatar from="mind" />
       <div className="rounded-2xl border border-border bg-card px-4 py-3">
-        <span className="sr-only">Mind is typing</span>
+        <span className="sr-only">{label}</span>
         <span aria-hidden="true" className="flex items-center gap-1.5">
           <span className="typing-dot size-1.5 rounded-full bg-foreground" />
           <span className="typing-dot size-1.5 rounded-full bg-foreground" />
@@ -35,9 +37,18 @@ function TypingBubble() {
 }
 
 export function ChatSim() {
+  const { dictionary, locale } = useLanguage();
+  const conversation = getConversation(locale ?? "en");
   const [shown, setShown] = useState(0);
   const [typing, setTyping] = useState(true);
+  const [runId, setRunId] = useState(0);
   const logRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setShown(0);
+    setTyping(true);
+    setRunId((value) => value + 1);
+  }, [locale]);
 
   useEffect(() => {
     let cancelled = false;
@@ -72,7 +83,7 @@ export function ChatSim() {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, []);
+  }, [conversation, runId]);
 
   useEffect(() => {
     const log = logRef.current;
@@ -88,18 +99,21 @@ export function ChatSim() {
     <div className="flex h-full min-h-[32rem] flex-col overflow-hidden rounded-2xl border border-border bg-[#19111d]">
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <div>
-          <p className="text-sm font-semibold">Mind</p>
+          <p className="text-sm font-semibold">{dictionary.chat.title}</p>
           <p className="text-xs text-muted-foreground">@mind · DM</p>
         </div>
         <p className="text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
-          Live sample
+          {dictionary.chat.live}
         </p>
       </div>
       <div ref={logRef} className="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
         {visible.map((line) => (
           <div
-            key={line.id}
-            className={cn("flex items-end gap-3", line.from === "visitor" && "flex-row-reverse")}
+            key={`${runId}-${line.id}`}
+            className={cn(
+              "flex items-end gap-3",
+              line.from === "visitor" && "flex-row-reverse",
+            )}
           >
             <Avatar from={line.from} />
             <div
@@ -121,16 +135,18 @@ export function ChatSim() {
                   <p className="text-[0.7rem] tracking-[0.14em] uppercase">
                     {line.attachment.name} ↗
                   </p>
-                  <p className="mt-1 text-sm text-muted-foreground">{line.attachment.detail}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {line.attachment.detail}
+                  </p>
                 </div>
               ) : null}
             </div>
           </div>
         ))}
-        {typing ? <TypingBubble /> : null}
+        {typing ? <TypingBubble label={dictionary.chat.typing} /> : null}
       </div>
       <div className="border-t border-border px-4 py-3 text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
-        A sample thread. Nothing here is sent.
+        {dictionary.chat.footer}
       </div>
     </div>
   );

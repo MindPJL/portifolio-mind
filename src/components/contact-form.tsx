@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
+import { useLanguage } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,6 +52,17 @@ async function copyText(text: string) {
 }
 
 export function ContactForm({ email }: { email: string }) {
+  const { dictionary } = useLanguage();
+  const t = dictionary.form;
+  const messages = {
+    nameRequired: t.nameRequired,
+    emailRequired: t.emailRequired,
+    emailInvalid: t.emailInvalid,
+    messageRequired: t.messageRequired,
+    messageShort: t.messageShort,
+    subjectPrefix: t.subjectPrefix,
+  };
+
   const [draft, setDraft] = useState<NoteDraft>(emptyDraft);
   const [attempted, setAttempted] = useState(false);
   const [phase, setPhase] = useState<"editing" | "ready">("editing");
@@ -60,9 +72,8 @@ export function ContactForm({ email }: { email: string }) {
   const emailRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
-  const errors = attempted ? validateNote(draft) : {};
-  const note = buildNote(draft);
-  const action = email ? "sent" : "copied";
+  const errors = attempted ? validateNote(draft, messages) : {};
+  const note = buildNote(draft, t.subjectPrefix);
 
   function update(field: keyof NoteDraft, value: string) {
     setDraft((current) => ({ ...current, [field]: value }));
@@ -71,7 +82,7 @@ export function ContactForm({ email }: { email: string }) {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setAttempted(true);
-    const nextErrors = validateNote(draft);
+    const nextErrors = validateNote(draft, messages);
 
     if (noteHasErrors(nextErrors)) {
       if (nextErrors.name) {
@@ -84,7 +95,7 @@ export function ContactForm({ email }: { email: string }) {
       return;
     }
 
-    const ready = buildNote(draft);
+    const ready = buildNote(draft, t.subjectPrefix);
     const copied = await copyText(ready.text);
 
     if (email) {
@@ -98,44 +109,40 @@ export function ContactForm({ email }: { email: string }) {
   if (phase === "ready") {
     const message =
       delivery === "email"
-        ? "Your email app should open with this note. A copy is on your clipboard too."
+        ? t.emailOpened
         : delivery === "copied"
-          ? "Copied to your clipboard. Paste it into whatever you use to reach me."
+          ? t.copied
           : email
-            ? "Your email app should open with this note. If it did not, select the note below and copy it by hand."
-            : "Automatic copy did not go through. Select the note below and copy it by hand.";
+            ? t.manualEmail
+            : t.manual;
 
     return (
-      <div role="status" className="border border-border bg-card p-5 sm:p-8">
-        <h2 className="font-serif text-3xl tracking-tight">Note is ready</h2>
+      <div role="status" className="rounded-2xl border border-border bg-card p-5 sm:p-8">
+        <h2 className="font-display text-3xl tracking-tight uppercase">{t.ready}</h2>
         <p className="mt-3 text-base leading-relaxed text-pretty text-muted-foreground">
           {message}
         </p>
-        <pre className="mt-6 overflow-x-auto border border-border bg-muted p-4 font-mono text-sm leading-relaxed break-words whitespace-pre-wrap">
+        <pre className="mt-6 overflow-x-auto rounded-xl border border-border bg-muted p-4 font-mono text-sm leading-relaxed break-words whitespace-pre-wrap">
           {note.text}
         </pre>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <Button
             type="button"
-            className="h-11 cursor-pointer px-4"
+            className="h-11 cursor-pointer bg-[#ff385b] px-4 text-[#fff4ec]"
             onClick={() => {
               void copyText(note.text).then((copied) => {
-                setCopyNotice(
-                  copied
-                    ? "Copied."
-                    : "Select the note above and copy it by hand.",
-                );
+                setCopyNotice(copied ? t.copiedShort : t.copyFailed);
               });
             }}
           >
-            Copy again
+            {t.copyAgain}
           </Button>
           {email ? (
             <a
               href={mailtoHref(email, note.subject, note.body)}
               className="inline-flex h-11 items-center justify-center border border-border bg-background px-4 text-sm font-medium hover:bg-muted"
             >
-              Open email again
+              {t.openEmail}
             </a>
           ) : null}
           <Button
@@ -147,7 +154,7 @@ export function ContactForm({ email }: { email: string }) {
               setPhase("editing");
             }}
           >
-            Edit note
+            {t.edit}
           </Button>
         </div>
         {copyNotice ? (
@@ -163,12 +170,12 @@ export function ContactForm({ email }: { email: string }) {
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       {attempted && noteHasErrors(errors) ? (
         <p role="alert" className="text-sm text-destructive">
-          The note needs a few fixes before it can be {action}.
+          {t.alert}
         </p>
       ) : null}
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="contact-name">Name</Label>
+        <Label htmlFor="contact-name">{t.name}</Label>
         <Input
           ref={nameRef}
           id="contact-name"
@@ -176,7 +183,7 @@ export function ContactForm({ email }: { email: string }) {
           autoComplete="name"
           value={draft.name}
           maxLength={80}
-          placeholder="What should I call you?"
+          placeholder={t.namePlaceholder}
           aria-invalid={Boolean(errors.name)}
           aria-describedby={errors.name ? "contact-name-error" : undefined}
           className="h-11 px-3 text-base md:text-base"
@@ -190,7 +197,7 @@ export function ContactForm({ email }: { email: string }) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="contact-email">Email</Label>
+        <Label htmlFor="contact-email">{t.email}</Label>
         <Input
           ref={emailRef}
           id="contact-email"
@@ -200,7 +207,7 @@ export function ContactForm({ email }: { email: string }) {
           inputMode="email"
           value={draft.email}
           maxLength={120}
-          placeholder="you@domain.com"
+          placeholder={t.emailPlaceholder}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? "contact-email-error" : undefined}
           className="h-11 px-3 text-base md:text-base"
@@ -214,14 +221,14 @@ export function ContactForm({ email }: { email: string }) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="contact-message">Note</Label>
+        <Label htmlFor="contact-message">{t.note}</Label>
         <Textarea
           ref={messageRef}
           id="contact-message"
           name="message"
           value={draft.message}
           maxLength={4000}
-          placeholder="What are you working on, or what should I read carefully?"
+          placeholder={t.messagePlaceholder}
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "contact-message-error" : undefined}
           className="min-h-40 px-3 py-3 text-base md:text-base"
@@ -235,13 +242,14 @@ export function ContactForm({ email }: { email: string }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <Button type="submit" className="h-11 cursor-pointer px-4 sm:w-fit">
-          {email ? "Send note" : "Copy note"}
+        <Button
+          type="submit"
+          className="h-11 cursor-pointer bg-[#ff385b] px-4 text-[#fff4ec] sm:w-fit"
+        >
+          {email ? t.send : t.copy}
         </Button>
         <p className="max-w-md text-sm leading-relaxed text-pretty text-muted-foreground">
-          {email
-            ? "Sending opens your email app with this note addressed to me. Nothing is stored on this site."
-            : "This prepares the note on your device and copies it. Nothing is stored or sent by the site."}
+          {email ? t.sendHint : t.copyHint}
         </p>
       </div>
     </form>

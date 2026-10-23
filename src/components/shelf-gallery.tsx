@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useLanguage } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import { ProjectFigure } from "@/components/project-figure";
 
@@ -23,6 +24,7 @@ function pad(value: number) {
 }
 
 export function ShelfGallery({ plates }: { plates: Plate[] }) {
+  const { dictionary } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [zoom, setZoom] = useState<Zoom>("fit");
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -95,7 +97,7 @@ export function ShelfGallery({ plates }: { plates: Plate[] }) {
           aria-modal="true"
           aria-labelledby={titleId}
           tabIndex={-1}
-          className="fixed inset-0 z-[60] flex flex-col bg-ink text-background outline-none"
+          className="fixed inset-0 z-[60] flex flex-col bg-[#100d14] text-[#fff4ec] outline-none"
         >
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-background/15 px-4 py-3 sm:px-6">
             <p className="font-mono text-xs tracking-[0.16em] uppercase">
@@ -129,41 +131,41 @@ export function ShelfGallery({ plates }: { plates: Plate[] }) {
                 className="h-9 cursor-pointer border-background/30 bg-transparent text-background hover:bg-background/10"
                 onClick={() => setOpenIndex(null)}
               >
-                Close
+                {dictionary.shelf.close}
               </Button>
             </div>
           </div>
 
           <div className="flex min-h-0 flex-1 items-center justify-center overflow-auto p-4 sm:p-8">
             <div style={{ width }} className="max-w-none shrink-0">
-              <ProjectFigure slug={plate.slug} className="border-background/20" />
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-background/75">
+              <ProjectFigure slug={plate.slug} className="border-white/20" />
+              <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/75">
                 {plate.caption}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-3 border-t border-background/15 px-4 py-3">
+          <div className="flex items-center justify-center gap-3 border-t border-white/15 px-4 py-3">
             <Button
               type="button"
               variant="outline"
-              className="h-10 cursor-pointer border-background/30 bg-transparent text-background hover:bg-background/10"
+              className="h-10 cursor-pointer border-white/30 bg-transparent text-[#fff4ec] hover:bg-white/10"
               disabled={openIndex === 0}
               onClick={() => setOpenIndex((current) => (current === null ? current : current - 1))}
             >
-              Previous
+              {dictionary.shelf.previous}
             </Button>
-            <p className="font-mono text-[0.7rem] tracking-[0.14em] text-background/60 uppercase">
-              Esc to close · arrows to move
+            <p className="font-mono text-[0.7rem] tracking-[0.14em] text-white/60 uppercase">
+              {dictionary.shelf.keys}
             </p>
             <Button
               type="button"
               variant="outline"
-              className="h-10 cursor-pointer border-background/30 bg-transparent text-background hover:bg-background/10"
+              className="h-10 cursor-pointer border-white/30 bg-transparent text-[#fff4ec] hover:bg-white/10"
               disabled={openIndex === plates.length - 1}
               onClick={() => setOpenIndex((current) => (current === null ? current : current + 1))}
             >
-              Next
+              {dictionary.shelf.next}
             </Button>
           </div>
         </div>
